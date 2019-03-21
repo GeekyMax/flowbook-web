@@ -13,6 +13,9 @@ const getters = {
   },
   addressId: state => {
     return state.addressId;
+  },
+  book: state => {
+    return state.book;
   }
 };
 export default getters;

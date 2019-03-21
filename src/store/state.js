@@ -12,6 +12,7 @@ const state = {
     PostalCode: '',
     Isdefault: 0
   },
-  addressId: ''
+  addressId: '',
+  book: {}
 };
 export default state;

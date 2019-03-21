@@ -3,8 +3,9 @@
     <div class="login">
       <h1>登陆商城</h1>
       <van-cell-group class="login-from">
-        <van-field v-model="username" clearable border label="邮箱" placeholder="请输入邮箱" :error-message="usernameErr" />
-        <van-field v-model="password" clearable border type="password" label="密码" placeholder="请输入密码" :error-message="passwordErr" />
+        <van-field v-model="username" clearable border label="邮箱" placeholder="请输入邮箱" :error-message="usernameErr"/>
+        <van-field v-model="password" clearable border type="password" label="密码" placeholder="请输入密码"
+                   :error-message="passwordErr"/>
         <van-cell>
           <van-row>
             <van-col span="12" class="btn">
@@ -21,9 +22,7 @@
 </template>
 
 <script>
-import MD5 from 'crypto-js/md5';
-import { emailCheck, pwdCheck } from '@/util/util';
-import { cors, login } from '@/api/api';
+import { cors, login, welcome } from '@/api/api';
 import { Toast } from 'vant';
 
 export default {
@@ -50,24 +49,16 @@ export default {
       this.usernameErr = '';
       this.passwordErr = '';
       this.loading = true;
-      // if (!emailCheck(this.username)) {
-      //   this.usernameErr = '邮箱格式不正确';
-      //   this.loading = false;
-      //   return;
-      // }
-      // if (!pwdCheck(this.password)) {
-      //   this.passwordErr = '密码格式不正确';
-      //   this.loading = false;
-      //   return;
-      // }
-      login({ username: this.username, password: MD5(this.password).toString() })
+
+      login({ username: this.username, password: this.password })
         .then(res => {
-          if (res.status === 200) {
+          console.log(res);
+          if (res.code === 0) {
             this.loading = false;
             this.$router.push('/');
           } else {
             this.loading = false;
-            Toast.fail(res.msg);
+            Toast.fail(res.message);
           }
         })
         .catch(error => {
@@ -84,33 +75,33 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.login
-  width 100%
-  height 100%
-  text-align center
-  background url('./../../images/bgc/bgc.jpg')
-  background-repeat no-repeat
-  background-size cover
-  overflow hidden
-
-  h1
-    margin-top 40%
-
-.login-from
-  width 80%
-  text-align center
-  padding 10px
-  margin 0 auto
-  box-shadow 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 8px 0 rgba(0, 0, 0, 0.19)
-
-  .btn
+  .login
+    width 100%
+    height 100%
     text-align center
-    margin-top 10px
+    /*background url('./../../images/bgc/bgc.jpg')*/
+    /*background-repeat no-repeat*/
+    /*background-size cover*/
+    overflow hidden
 
-.slide-enter-active, .slide-leave-active
-  transition all 0.5s
+    h1
+      margin-top 40%
 
-.slide-enter, .slide-leave-to
-  opacity 0
-  transform translate3d(100%, 0, 0)
+  .login-from
+    width 80%
+    text-align center
+    padding 10px
+    margin 0 auto
+    box-shadow 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 8px 0 rgba(0, 0, 0, 0.19)
+
+    .btn
+      text-align center
+      margin-top 10px
+
+  .slide-enter-active, .slide-leave-active
+    transition all 0.5s
+
+  .slide-enter, .slide-leave-to
+    opacity 0
+    transform translate3d(100%, 0, 0)
 </style>

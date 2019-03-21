@@ -15,6 +15,9 @@ const mutations = {
   },
   [types.SET_ADDRESSID_MUTATION](state, payload) {
     state.addressId = payload;
+  },
+  [types.SET_BOOK_MUTATION](state, payload) {
+    state.book = payload;
   }
 };
 

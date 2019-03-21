@@ -19,9 +19,4 @@ export default {
 html, body, #app
   width 100%
   height 100%
-#github
-  position fixed
-  top 0
-  right 60px
-  z-index 999
 </style>

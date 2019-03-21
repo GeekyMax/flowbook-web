@@ -1,5 +1,5 @@
 <template>
-  <div class="good-item">
+  <div class="book-item">
     <div class="head">
       <span class="border"></span>
       <span class="title">{{title}}</span>
@@ -26,7 +26,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.good-item
+.book-item
   background-color #fff
   padding 4px 6px
   margin-bottom 6px

@@ -1,6 +1,6 @@
-import { get, post } from '@/util/http';
+import { get, post, postForm } from '@/util/http';
 export const test = () => get('/');
-export const login = params => post('login', params);
+export const login = params => postForm('login', params);
 export const reg = params => post('reg', params);
 export const hotSale = () => post('hotsale');
 export const saleGroup = () => post('salegroup');
@@ -15,3 +15,6 @@ export const getOrder = () => post('getOrder');
 export const createOrder = params => post('createOrder', params);
 export const getGoodById = params => post('getGoodById', params);
 export const cors = () => post('cors');
+export const welcome = () => get('welcome');
+
+export const listBook = params => post('listBook', params);

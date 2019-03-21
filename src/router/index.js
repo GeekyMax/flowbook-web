@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import BookList from '@/views/BookList/BookList';
+import Book from '@/views/Book/Book';
 const Home = () => import(/* webpackChunkName: "Home" */ '@/views/Home/Home');
 const Cart = () => import(/* webpackChunkName: "Cart" */ '@/views/Cart/Cart');
 const User = () => import(/* webpackChunkName: "User" */ '@/views/User/User');
@@ -91,6 +93,19 @@ export default new Router({
       path: '*',
       name: 'Notfound',
       component: NotFound,
+      meta: {
+        fullScreen: true
+      }
+    },
+    {
+      path: '/bookList',
+      name: 'BookList',
+      component: BookList
+    },
+    {
+      path: '/book',
+      name: 'Book',
+      component: Book,
       meta: {
         fullScreen: true
       }

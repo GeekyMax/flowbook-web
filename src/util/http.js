@@ -2,12 +2,13 @@
 import axios from 'axios';
 import { Toast } from 'vant';
 import router from '@/router';
+import * as Qs from 'qs';
 
 // 环境的切换
-if (process.env.NODE_ENV == 'development') {
-  axios.defaults.baseURL = '/api';
+if (process.env.NODE_ENV === 'development') {
+  axios.defaults.baseURL = 'http://localhost:8080';
 } else {
-  axios.defaults.baseURL = '/api';
+  axios.defaults.baseURL = 'http://localhost:8080';
 }
 
 // 超时时间
@@ -72,6 +73,27 @@ export function post(url, params) {
   return new Promise((resolve, reject) => {
     axios
       .post(url, params)
+      .then(res => {
+        resolve(res.data);
+      })
+      .catch(err => {
+        reject(err.data);
+      });
+  });
+}
+
+export function postForm(url, params) {
+  return new Promise((resolve, reject) => {
+    const data = Qs.stringify(params);
+    console.log(data);
+    axios({
+      url: url,
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      data
+    })
       .then(res => {
         resolve(res.data);
       })
