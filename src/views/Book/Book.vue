@@ -11,45 +11,47 @@
           <img :src="url" alt="图片">
         </van-swipe-item>
       </van-swipe>
-      <van-cell-group class="book-detail">
+      <div class="info">
+      <van-cell-group class="book-detail" border=false>
         <van-cell>
           <div class="book-title">
             <span>{{book.bookName}}</span>
             <span class="book-price">￥{{book.sellPrice}}</span>
-            <span class="original-price">原价￥{{book.originalPrice}}</span>
+            <strike class="original-price">原价￥{{book.originalPrice}}</strike>
 
           </div>
         </van-cell>
-        <van-cell class="book-dealing-info">
-          <van-row>
-            <van-col span="12"
-                     class="books-dealing-item"><span class="info-label">交易方式</span> <span class="info-text">线上，线下</span></van-col>
-            <van-col span="12"
-                     class="books-dealing-item"><span class="info-label">卖家常住地</span> <span class="info-text">玉泉</span></van-col>
+        <van-cell class="dealing-info" >
+          <van-row class="dealing-row">
+            <van-col span="12" ><span class="info-label">交易</span> <span class="info-text">线上，线下</span></van-col>
+            <van-col span="12"><span class="info-label">地址</span> <span class="info-text">玉泉</span></van-col>
           </van-row>
-        </van-cell>
-        <van-cell class="book-dealing-info">
-          <van-row>
-            <van-col span="12"
-                     class="books-dealing-item"><span class="info-label">书籍类别</span> <span class="info-text">计算机</span></van-col>
+          <van-row class="dealing-row">
+            <van-col span="12"><span class="info-label">类别</span> <span class="info-text">计算机</span></van-col>
           </van-row>
         </van-cell>
       </van-cell-group>
-      <van-cell-group class="goods-cell-group seller">
-        <van-cell is-link>
-          <template slot="title">
-            <span class="van-cell-text">卖家详情</span>
-          </template>
-          <img class="seller-avatar" slot="right-icon" :src="getSmallAvatarUrl('https://flowbook-pic.oss-cn-hangzhou.aliyuncs.com/20190380/a6615033-c58e-49e3-ba49-2e96fff3333d.jpeg')" alt="">
-        </van-cell>
-      </van-cell-group>
-      <van-cell-group class="books-cell-group xiangqing">
-        <van-cell title="查看书籍详情"
-                  is-link
-                  @click="scrollToDetail"/>
-      </van-cell-group>
+      </div>
+
+
+      <!--只有在cell为最后一个元素的时候,不显示下分割线,所以加个div-->
+      <div class="more-info-cell ">
+        <div>
+          <van-cell is-link title="卖家详情">
+            <img class="seller-avatar"  :src="sellerAvatar" alt="">
+          </van-cell>
+        </div>
+        <div>
+          <van-cell title="查看书籍详情"
+                    is-link
+                    @click="scrollToDetail"/>
+        </div>
+      </div>
+
+
       <div class="detail"
            ref="detail">
+        <div class="desc-title"><span>------商品详情------</span></div>
         <div class="book-desc">{{book.description}}</div>
         <img v-for="pic in allUrl" :key="pic" :src="pic" alt="">
       </div>
@@ -101,6 +103,9 @@ export default {
         });
       return newList;
     },
+    sellerAvatar() {
+      return this.getSmallRoundAvatarUrl(this.book.pictureUrlList[0]);
+    },
     ...mapGetters(['book'])
   },
   methods: {
@@ -110,6 +115,9 @@ export default {
     getSmallAvatarUrl(url) {
       return url + '_avatar-40';
     },
+    getSmallRoundAvatarUrl(url) {
+      return url + '_avatar-round-40';
+    },
     ...mapMutations({
       setBook: 'SET_GOOD_MUTATION'
     })
@@ -118,8 +126,11 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+  .van-hairline
+    border 0
   .book
     padding-bottom 50px
+    background-color #f5f5f5
     .info-label
       font-size 12px
       color grey
@@ -153,7 +164,7 @@ export default {
   .book-detail
     .book-title
       font-size 16px
-
+      vertical-align bottom
     .book-price
       color red
       margin-left 10px
@@ -162,16 +173,30 @@ export default {
       font-size 12px
       margin-left 10px
 
-  .book-dealing-info
-    padding 5px 15px
-
-    .books-dealing-item
+  .dealing-info
+    padding 0 15px
+    .dealing-row
       font-size 12px
       color #999
+      padding 4px 0
+
+  .more-info-cell
+    margin 8px 0
   .books
+
   .detail img
     width 100%
     height auto
+
+  .desc-title
+    margin 8px
+    text-align center
+    font-size 12px
+    color grey
+
+  .book-desc
+    padding 15px
+    background-color white
 
   .seller, .xiangqing
     margin 0.3rem 0
@@ -179,6 +204,7 @@ export default {
   .seller-avatar
     width 24px
     height 24px
+    vertical-align middle
 
   .slide-enter-active, .slide-leave-active
     transition all 0.3s
