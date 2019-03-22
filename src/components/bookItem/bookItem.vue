@@ -1,15 +1,22 @@
 <template>
-  <div class="book-item">
-    <div class="head">
-      <span class="border"></span>
-      <span class="title">{{data.bookName}}</span>
-      <span class="describe">{{data.category}}</span>
-      <span v-if="moreRoute">
-        <router-link :to="moreRoute" class="more">更多</router-link>
-      </span>
+  <van-card
+    class="item-card van-hairline--bottom"
+    title="go语言实战"
+    :thumb="data.pictureUrlList[2]"
+    tag="全新"
+    desc="上学期上课的教材，九成新，现在随缘出售，想要的先私我。"
+    :origin-price="data.originalPrice"
+    :price="data.sellPrice"
+  >
+    <div slot="tags">
+      <van-tag round plain>
+        线下交易
+      </van-tag>
+      <van-tag round plain>
+        全新
+      </van-tag>
     </div>
-    <slot></slot>
-  </div>
+  </van-card>
 </template>
 
 <script>
@@ -25,31 +32,25 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .book-item
-    background-color #fff
-    padding 4px 6px
-    margin-bottom 6px
-
-    .head
-      padding 4px 0
-
-      .border
-        border-left 3px solid red
-
-      .title
-        margin-left 6px
-        font-weight 700
-
-      .describe
-        font-size 12px
-        margin-left 6px
-        color #8f8f8f
-
-      .more
-        float right
-        color #000
-        border-radius 10px
-        font-size 12px
-        border 1px solid #000
-        padding 0 6px
+.item-card
+  background-color white
+  padding 12px
+  margin-top 0
+.van-card__title
+  font-size 16px
+  -webkit-line-clamp 1
+  overflow-y visible
+.van-card__price
+  font-size 20px
+.van-card__thumb
+  width 100px
+  height 100px
+.van-card__tags
+  color: red
+.van-card__desc
+  font-size 12px
+  padding 4px 0
+.van-tag
+  margin 4px 0
+  margin-right 4px
 </style>

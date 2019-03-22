@@ -60,7 +60,7 @@
                                    text="消息"/>
         <van-goods-action-mini-btn icon="shop"
                                    text="卖家"/>
-        <!--<van-goods-action-big-btn @click="showSkuModal"-->
+        <!--<van-good-action-big-btn @click="showSkuModal"-->
                                   <!--text="加入购物车"/>-->
         <van-goods-action-big-btn @click="showSkuModal"
                                   text="立即购买"
@@ -117,6 +117,12 @@ export default {
     },
     getSmallRoundAvatarUrl(url) {
       return url + '_avatar-round-40';
+    },
+    scrollToDetail() {
+      this.$refs.detail.scrollIntoView();
+    },
+    goBack() {
+      this.$router.go(-1);
     },
     ...mapMutations({
       setBook: 'SET_GOOD_MUTATION'

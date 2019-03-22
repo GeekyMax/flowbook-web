@@ -12,7 +12,7 @@
           class="list"
           v-for="item1 in orderList"
           :key="item1.Orderid">
-          <van-card v-for="item2 in item1.goods"
+          <van-card v-for="item2 in item1.good"
             class="list-item"
             :key="item2.Goodid"
             :title="item2.Goodname.substr(0,10)"
@@ -69,7 +69,7 @@ export default {
           for (let k = 0; k < data.length; k++) {
             data[k].orderCount = mapped[data[k].Goodid];
           }
-          result.data[i].goods = data;
+          result.data[i].good = data;
         }
         this.orderList = result.data.reverse();
         console.log(this.orderList);

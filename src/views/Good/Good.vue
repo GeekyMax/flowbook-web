@@ -78,7 +78,7 @@
       </van-goods-action>
       <van-sku v-model="showBase"
         :sku="sku"
-        :goods="goods"
+        :goods="good"
         :goods-id="goodsId"
         @buy-clicked="onBuyClicked"
         @add-cart="onAddCartClicked"
@@ -97,16 +97,16 @@ export default {
       cartCount: '',
       showBase: false,
       sku: {},
-      goods: {},
+      good: {},
       goodsId: 1,
       count: 1
     };
   },
   mounted() {
     if (!this.good.Goodname) {
-      this.$router.push('/');
+      // this.$router.push('/');
     }
-    this.goods = {
+    this.good = {
       title: this.good.Goodname,
       picture: this.good.GoodImg
     };

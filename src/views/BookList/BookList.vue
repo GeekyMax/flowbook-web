@@ -1,9 +1,7 @@
 <template>
   <div class="home">
     <van-list v-model="loading" :finished="isLastPage" finished-text="没有更多了" @load="loadMoreBook">
-      <van-cell v-for="book in bookList" :key="book" @click="showBook(book)">
-        <book-item :data="book"/>
-      </van-cell>
+      <book-item v-for="book in bookList" :data="book" :key="book" />
     </van-list>
   </div>
 </template>
@@ -12,10 +10,11 @@
 import bookItem from '@/components/bookItem/bookItem';
 import { listBook } from '@/api/api';
 import { mapMutations } from 'vuex';
+import GoodItem from '@/components/goodItem/goodItem';
 
 export default {
   name: 'BookList',
-  components: { bookItem },
+  components: { GoodItem, bookItem },
   comments: {
     bookItem
   },
@@ -66,7 +65,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .home
-    background-color #eee
-    margin-bottom 50px
+.home
+  background-color #eee
+  margin-bottom 50px
 </style>
