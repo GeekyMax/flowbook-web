@@ -18,7 +18,15 @@ const mutations = {
   },
   [types.SET_BOOK_MUTATION](state, payload) {
     state.book = payload;
+  },
+  [types.SET_BOOK_MUTATION_WITH_SAVE](state, payload) {
+    state.book = payload;
+    storeLocalStore('book', payload);
   }
 };
+function storeLocalStore(name, state) {
+  console.log('save ' + name);
+  window.localStorage.setItem(name, JSON.stringify(state));
+}
 
 export default mutations;

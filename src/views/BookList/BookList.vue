@@ -59,7 +59,7 @@ export default {
       this.$router.push('/book');
     },
     ...mapMutations({
-      setBook: 'SET_GOOD_MUTATION'
+      setBook: 'SET_GOOD_MUTATION_WITH_SAVE'
     })
   }
 };

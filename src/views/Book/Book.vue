@@ -8,7 +8,7 @@
       <van-swipe class="swipe"
                  style="height:375px">
         <van-swipe-item v-for="url in allUrl" :key="url">
-          <img :src="getMainUrl(url)" alt="图片">
+          <img :src="url" alt="图片">
         </van-swipe-item>
       </van-swipe>
       <van-cell-group class="book-detail">
@@ -40,7 +40,7 @@
           <template slot="title">
             <span class="van-cell-text">卖家详情</span>
           </template>
-          <img class="seller-avatar" slot="right-icon" src="https://flowbook-pic.oss-cn-hangzhou.aliyuncs.com/20190380/a6615033-c58e-49e3-ba49-2e96fff3333d.jpeg_thumbnail-240" alt="">
+          <img class="seller-avatar" slot="right-icon" :src="getSmallAvatarUrl('https://flowbook-pic.oss-cn-hangzhou.aliyuncs.com/20190380/a6615033-c58e-49e3-ba49-2e96fff3333d.jpeg')" alt="">
         </van-cell>
       </van-cell-group>
       <van-cell-group class="books-cell-group xiangqing">
@@ -51,7 +51,7 @@
       <div class="detail"
            ref="detail">
         <div class="book-desc">{{book.description}}</div>
-        <img v-for="pic in book.pictureUrlList" :key="pic" :src="getMainUrl(pic)" alt="">
+        <img v-for="pic in allUrl" :key="pic" :src="pic" alt="">
       </div>
       <van-goods-action>
         <van-goods-action-mini-btn icon="chat"
@@ -77,24 +77,42 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { mapMutations } from 'vuex';
 export default {
   name: 'Book',
   data: function() {
     return {};
   },
+  created() {
+    console.log(this.book);
+    if (!this.book.id) {
+      console.log('load book');
+      this.setBook(JSON.parse(localStorage.getItem('book')));
+    }
+  },
   mounted() {},
   computed: {
     allUrl() {
       var newList = [];
-      newList.push(this.book.coverUrl);
-      return newList.concat(this.book.pictureUrlList);
+      newList.push(this.getMainUrl(this.book.coverUrl));
+      this.book.pictureUrlList &&
+        this.book.pictureUrlList.forEach(pic => {
+          newList.push(this.getMainUrl(pic));
+        });
+      return newList;
     },
     ...mapGetters(['book'])
   },
   methods: {
     getMainUrl(url) {
-      return url + '_main-w800h800';
-    }
+      return url + '_main-800';
+    },
+    getSmallAvatarUrl(url) {
+      return url + '_avatar-40';
+    },
+    ...mapMutations({
+      setBook: 'SET_GOOD_MUTATION'
+    })
   }
 };
 </script>
