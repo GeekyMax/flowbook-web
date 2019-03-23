@@ -1,9 +1,11 @@
 <template>
-  <div class="home">
-    <van-list v-model="loading" :finished="isLastPage" finished-text="没有更多了" @load="loadMoreBook">
-      <book-item v-for="book in bookList" :data="book" :key="book" />
-    </van-list>
-  </div>
+  <keep-alive>
+    <div class="home">
+      <van-list v-model="loading" :finished="isLastPage" finished-text="没有更多了" @load="loadMoreBook">
+        <book-item v-for="book in bookList" :data="book" :key="book" @click.native="showBook(book)" />
+      </van-list>
+    </div>
+  </keep-alive>
 </template>
 
 <script>

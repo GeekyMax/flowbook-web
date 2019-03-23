@@ -49,16 +49,18 @@ export default {
 <style lang="stylus" scoped>
 .item-card
   background-color white
-  padding 12px
   margin-top 0
-  padding 4px 0
+  padding 10px 8px
 .van-tag
+  margin 4px 0
   margin-right 4px
 .my-title
+  color #404040
+  font-weight 500
   overflow hidden
   text-overflow ellipsis
   white-space nowrap
-  font-size 16px
+  font-size 14px
 .my-price
   font-size 20px
 </style>
