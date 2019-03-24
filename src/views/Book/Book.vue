@@ -1,78 +1,84 @@
 <template>
   <transition name="slide">
     <div class="book">
-      <div class="back-btn"
-           @click="goBack">
-        <van-icon name="arrow-left"/>
+      <div class="back-btn" @click="goBack">
+        <van-icon name="arrow-left" />
       </div>
-      <van-swipe class="swipe"
-                 style="height:375px">
+      <van-swipe class="swipe" style="height:375px">
         <van-swipe-item v-for="url in allUrl" :key="url">
-          <img :src="url" alt="图片">
+          <img :src="url" alt="图片" />
         </van-swipe-item>
       </van-swipe>
       <div class="info">
-      <van-cell-group class="book-detail" border=false>
-        <van-cell>
-          <div class="book-title">
-            <span>{{book.bookName}}</span>
-            <span class="book-price">￥{{book.sellPrice}}</span>
-            <strike class="original-price">原价￥{{book.originalPrice}}</strike>
-
-          </div>
-        </van-cell>
-        <van-cell class="dealing-info" >
-          <van-row class="dealing-row">
-            <van-col span="12" ><span class="info-label">交易</span> <span class="info-text">线上，线下</span></van-col>
-            <van-col span="12"><span class="info-label">地址</span> <span class="info-text">玉泉</span></van-col>
-          </van-row>
-          <van-row class="dealing-row">
-            <van-col span="12"><span class="info-label">类别</span> <span class="info-text">计算机</span></van-col>
-          </van-row>
-        </van-cell>
-      </van-cell-group>
+        <van-cell-group class="book-detail" border="false">
+          <van-cell>
+            <div class="book-title">
+              <span>{{ book.bookName }}</span>
+              <span class="book-price">￥{{ book.sellPrice }}</span>
+              <strike class="original-price">原价￥{{ book.originalPrice }}</strike>
+            </div>
+          </van-cell>
+          <van-cell class="dealing-info">
+            <van-row class="dealing-row">
+              <van-col span="12"
+                ><span class="info-label">交易</span>
+                <span class="info-text">{{ this.book.dealingMethod }}</span></van-col
+              >
+              <van-col span="12"
+                ><span class="info-label">类别</span> <span class="info-text">{{ this.book.category }}</span></van-col
+              >
+            </van-row>
+            <van-row class="dealing-row">
+              <van-col span="12"
+                ><span class="info-label">支持</span>
+                <span class="info-text">{{ this.book.deliveryMethod }}</span></van-col
+              >
+              <van-col span="12"
+                ><span class="info-label">地址</span> <span class="info-text">{{ this.book.address }}</span>
+              </van-col>
+            </van-row>
+          </van-cell>
+        </van-cell-group>
       </div>
-
 
       <!--只有在cell为最后一个元素的时候,不显示下分割线,所以加个div-->
       <div class="more-info-cell ">
         <div>
           <van-cell is-link title="卖家详情">
-            <img class="seller-avatar"  :src="sellerAvatar" alt="">
+            <img class="seller-avatar" :src="sellerAvatar" alt="" />
           </van-cell>
         </div>
         <div>
-          <van-cell title="查看书籍详情"
-                    is-link
-                    @click="scrollToDetail"/>
+          <van-cell title="查看书籍详情" is-link @click="scrollToDetail" />
         </div>
       </div>
 
-
-      <div class="detail"
-           ref="detail">
-        <div class="desc-title"><span>------商品详情------</span></div>
-        <div class="book-desc">{{book.description}}</div>
-        <img v-for="pic in allUrl" :key="pic" :src="pic" alt="">
+      <div class="detail" ref="detail">
+        <div class="desc-title">
+          <div class="border"></div>
+          <div class="title">宝贝详情</div>
+          <div class="border"></div>
+        </div>
+        <div class="book-desc">{{ book.description }}</div>
+        <img v-for="pic in allUrl" :key="pic" :src="pic" alt="" />
       </div>
       <van-goods-action>
-        <van-goods-action-mini-btn icon="chat"
-                                   text="消息"/>
-        <van-goods-action-mini-btn icon="shop"
-                                   text="卖家"/>
-        <!--<van-good-action-big-btn @click="showSkuModal"-->
-                                  <!--text="加入购物车"/>-->
-        <van-goods-action-big-btn @click="showSkuModal"
-                                  text="立即购买"
-                                  primary/>
+        <van-goods-action-mini-btn icon="chat" text="消息" />
+        <van-goods-action-mini-btn icon="shop" text="卖家" />
+        <van-goods-action-mini-btn icon="cart" text="购物车" to="/Cart" />
+        <!--text="加入购物车"/>-->
+        <van-goods-action-big-btn @click="showSkuModal" text="加入购物车" />
+        <van-goods-action-big-btn @click="showSkuModal" text="立即购买" primary />
       </van-goods-action>
-      <van-sku v-model="showBase"
-               :sku="sku"
-               :books="books"
-               :books-id="booksId"
-               @buy-clicked="onBuyClicked"
-               @add-cart="onAddCartClicked"
-               @stepper-change="getCount"/>
+      <van-sku
+        v-model="showBase"
+        :sku="sku"
+        :goods="this.good"
+        :goods-id="this.book.id"
+        @buy-clicked="onBuyClicked"
+        @add-cart="onAddCartClicked"
+        @stepper-change="getCount"
+      />
     </div>
   </transition>
 </template>
@@ -80,10 +86,15 @@
 <script>
 import { mapGetters } from 'vuex';
 import { mapMutations } from 'vuex';
+
 export default {
   name: 'Book',
-  data: function() {
-    return {};
+  data() {
+    return {
+      showBase: false,
+      sku: {},
+      good: 1
+    };
   },
   created() {
     console.log(this.book);
@@ -92,7 +103,132 @@ export default {
       this.setBook(JSON.parse(localStorage.getItem('book')));
     }
   },
-  mounted() {},
+  mounted() {
+    this.sku = {
+      tree: [
+        {
+          k: '颜色',
+          k_id: '1',
+          v: [
+            {
+              id: '30349',
+              name: '天蓝色',
+              imgUrl: this.book.coverUrl
+            }
+          ],
+          k_s: 's1',
+          count: 2
+        },
+        {
+          k: '尺寸',
+          k_id: '2',
+          v: [
+            {
+              id: '1193',
+              name: '1'
+            },
+            {
+              id: '1194',
+              name: '2'
+            }
+          ],
+          k_s: 's2',
+          count: 2
+        }
+      ],
+      list: [
+        {
+          id: 2259,
+          price: 100,
+          discount: 100,
+          code: '',
+          s1: '1215',
+          s2: '1193',
+          s3: '0',
+          s4: '0',
+          s5: '0',
+          extend: null,
+          kdt_id: 55,
+          discount_price: 0,
+          stock_num: 110,
+          stock_mode: 0,
+          is_sell: null,
+          combin_sku: false,
+          goods_id: 946755
+        },
+        {
+          id: 2260,
+          price: 100,
+          discount: 100,
+          code: '',
+          s1: '1215',
+          s2: '1194',
+          s3: '0',
+          s4: '0',
+          s5: '0',
+          extend: null,
+          kdt_id: 55,
+          discount_price: 0,
+          stock_num: 0,
+          stock_mode: 0,
+          is_sell: null,
+          combin_sku: false,
+          goods_id: 946755
+        },
+        {
+          id: 2257,
+          price: 100,
+          discount: 100,
+          code: '',
+          s1: '30349',
+          s2: '1193',
+          s3: '0',
+          s4: '0',
+          s5: '0',
+          extend: null,
+          kdt_id: 55,
+          discount_price: 0,
+          stock_num: 999,
+          stock_mode: 0,
+          is_sell: null,
+          combin_sku: false,
+          goods_id: 946755
+        },
+        {
+          id: 2258,
+          price: 100,
+          discount: 100,
+          code: '',
+          s1: '30349',
+          s2: '1194',
+          s3: '0',
+          s4: '0',
+          s5: '0',
+          extend: null,
+          kdt_id: 55,
+          discount_price: 0,
+          stock_num: 655,
+          stock_mode: 0,
+          is_sell: null,
+          combin_sku: false,
+          goods_id: 946755
+        }
+      ],
+      price: this.book.sellPrice,
+      stock_num: 227,
+      collection_id: 2261,
+      collection_price: 0,
+      none_sku: false,
+      sold_num: 0,
+      min_price: '1.00',
+      max_price: '1.00',
+      hide_stock: false
+    };
+    this.good = {
+      title: this.book.bookName,
+      picture: this.book.coverUrl
+    };
+  },
   computed: {
     allUrl() {
       var newList = [];
@@ -124,98 +260,123 @@ export default {
     goBack() {
       this.$router.go(-1);
     },
+    showSkuModal() {
+      this.showBase = true;
+    },
+    onBuyClicked() {
+      this.setOrderBook([this.book]);
+      this.$router.push('/Order');
+    },
     ...mapMutations({
-      setBook: 'SET_GOOD_MUTATION'
+      setBook: 'SET_GOOD_MUTATION',
+      setOrderBook: 'SET_ORDER_BOOK_MUTATION'
     })
   }
 };
 </script>
 
 <style lang="stylus" scoped>
-  .van-hairline
-    border 0
-  .book
-    padding-bottom 50px
-    background-color #f5f5f5
-    .info-label
-      font-size 12px
-      color grey
-      margin-right 12px
-    .info-text
-      font-size 12px
-      color black
-    .back-btn
-      position fixed
-      z-index 999
-      top 10px
-      left 10px
-      width 30px
-      height 30px
-      border-radius 50%
-      color #fff
-      line-height 32px
-      text-align center
-      background-color rgba(102, 102, 102, 0.4)
+.van-hairline
+  border 0
 
-      i
-        font-weight 700
-        margin-left -2px
-        margin-top 4px
+.book
+  padding-bottom 50px
+  background-color #f5f5f5
 
-  .swipe img
-    width 100%
-    height auto
-    display block
-
-  .book-detail
-    .book-title
-      font-size 16px
-      vertical-align bottom
-    .book-price
-      color red
-      margin-left 10px
-    .original-price
-      color grey
-      font-size 12px
-      margin-left 10px
-
-  .dealing-info
-    padding 0 15px
-    .dealing-row
-      font-size 12px
-      color #999
-      padding 4px 0
-
-  .more-info-cell
-    margin 8px 0
-  .books
-
-  .detail img
-    width 100%
-    height auto
-
-  .desc-title
-    margin 8px
-    text-align center
+  .info-label
     font-size 12px
     color grey
+    margin-right 12px
 
-  .book-desc
-    padding 15px
-    background-color white
+  .info-text
+    font-size 12px
+    color black
 
-  .seller, .xiangqing
-    margin 0.3rem 0
+  .back-btn
+    position fixed
+    z-index 999
+    top 10px
+    left 10px
+    width 30px
+    height 30px
+    border-radius 50%
+    color #fff
+    line-height 32px
+    text-align center
+    background-color rgba(102, 102, 102, 0.4)
 
-  .seller-avatar
-    width 24px
-    height 24px
-    vertical-align middle
+    i
+      font-weight 700
+      margin-left -2px
+      margin-top 4px
 
-  .slide-enter-active, .slide-leave-active
-    transition all 0.3s
+.swipe img
+  width 100%
+  height auto
+  display block
 
-  .slide-enter, .slide-leave-to
-    opacity 0
-    transform translate3d(100%, 0, 0)
+.book-detail
+  .book-title
+    font-size 16px
+    vertical-align bottom
+
+  .book-price
+    color red
+    margin-left 10px
+
+  .original-price
+    color grey
+    font-size 12px
+    margin-left 10px
+
+.dealing-info
+  padding 0 15px
+
+  .dealing-row
+    font-size 12px
+    color #999
+    padding 4px 0
+
+.more-info-cell
+  margin 8px 0
+
+.books
+.detail img
+  width 100%
+  height auto
+
+
+.desc-title
+  color: grey
+  display flex
+  justify-content center
+  align-items center
+  text-align center
+  font-size 14px
+  height 30px
+
+  .border
+    width 12px
+    height 1px
+    margin 0 8px
+    background-color grey
+
+.book-desc
+  padding 15px
+  background-color white
+
+.seller, .xiangqing
+  margin 0.3rem 0
+
+.seller-avatar
+  width 24px
+  height 24px
+  vertical-align middle
+
+.slide-enter-active, .slide-leave-active
+  transition all 0.3s
+
+.slide-enter, .slide-leave-to
+  opacity 0
+  transform translate3d(100%, 0, 0)
 </style>

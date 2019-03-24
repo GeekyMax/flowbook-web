@@ -28,7 +28,7 @@ import { Toast } from 'vant';
 export default {
   data() {
     return {
-      username: 'max',
+      username: 'seller1',
       password: 'Max112211',
       usernameErr: '',
       passwordErr: '',

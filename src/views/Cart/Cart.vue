@@ -1,78 +1,56 @@
 <template>
   <div class="cart">
-    <van-nav-bar title="购物车"
-      :right-text="rightText"
-      @click-right="editCart"
-      :z-index="10"
-      fixed />
-    <div class="nogood"
-      v-if="!this.cartList.length">
+    <van-nav-bar title="购物车" :right-text="rightText" @click-right="editCart" :z-index="10" fixed />
+    <div class="no-good" v-if="!this.cartList.length">
       <div>购物车空空的，快去购物吧~</div>
-      <van-button type="primary"
-        class="btn"
-        @click="goHome">去首页</van-button>
+      <van-button type="primary" class="btn" @click="goHome">去首页</van-button>
     </div>
-    <van-checkbox-group class="card-goods"
-      v-model="checkedGoods">
-      <van-checkbox class="card-goods__item"
-        v-for="item in cartList"
-        :key="item.Goodid"
-        :name="item.Goodid">
-        <van-card :title="item.Goodname"
-          :desc="item.Gooddescribe"
+    <van-checkbox-group class="card-goods" v-model="checkedGoods">
+      <van-checkbox class="card-goods__item" v-for="item in cartList" :key="item.book.id" :name="item.book.id">
+        <van-card
+          :title="item.book.bookName"
+          :desc="item.book.description"
           :num="item.Cartcount"
-          :price="formatPrice(item.GoodPriceaftersale)"
-          :thumb="item.GoodImg">
-          <div slot="footer"
-            class="footer">
-            <span class="add"
-              @click.stop="reduceCount(item,item.Cartcount)">
-              <van-button class="btn"
-                size="mini">-</van-button>
-            </span>
-            <span class="input"
-              @click.stop="showModal(item)">
-              <span class="input-edit">{{item.Cartcount}}</span>
-            </span>
-            <span class="reduce"
-              @click.stop="addCount(item,item.Cartcount)">
-              <van-button class="btn"
-                size="mini">+</van-button>
-            </span>
-          </div>
+          :price="formatPrice(item.book.sellPrice)"
+          :thumb="item.book.coverUrl"
+        >
+          <!--<div slot="footer" class="footer">-->
+            <!--<span class="add" @click.stop="reduceCount(item, item.Cartcount)">-->
+              <!--<van-button class="btn" size="mini">-</van-button>-->
+            <!--</span>-->
+            <!--<span class="input" @click.stop="showModal(item)">-->
+              <!--<span class="input-edit">{{ item.Cartcount }}</span>-->
+            <!--</span>-->
+            <!--<span class="reduce" @click.stop="addCount(item, item.Cartcount)">-->
+              <!--<van-button class="btn" size="mini">+</van-button>-->
+            <!--</span>-->
+          <!--</div>-->
         </van-card>
       </van-checkbox>
     </van-checkbox-group>
-    <van-dialog v-model="modalShow"
-      show-cancel-button
-      :before-close="beforeClose"
-      title="数量修改">
+    <van-dialog v-model="modalShow" show-cancel-button :before-close="beforeClose" title="数量修改">
       <div class="modal-box">
-        <span class="add"
-          @click.stop="reduceEditCount">
-          <van-button class="btn"
-            size="mini">-</van-button>
+        <span class="add" @click.stop="reduceEditCount">
+          <van-button class="btn" size="mini">-</van-button>
         </span>
         <span class="input">
-          <input type="number"
-            v-model.number="editNum" />
+          <input type="number" v-model.number="editNum" />
         </span>
-        <span class="reduce"
-          @click.stop="addEditCount">
-          <van-button class="btn"
-            size="mini">+</van-button>
+        <span class="reduce" @click.stop="addEditCount">
+          <van-button class="btn" size="mini">+</van-button>
         </span>
       </div>
     </van-dialog>
-    <van-submit-bar class="cart-bar"
+    <van-submit-bar
+      class="cart-bar"
       v-if="this.cartList.length"
-      :price="isEdit?undefined:totalPrice"
-      :label="isEdit?'':'合计'"
-      :button-text="isEdit?'删除':'提交订单'"
-      @submit="onSubmit">
-      <span @click="selectAll"
-        class="selectAll">
-        <van-checkbox v-model="checkedAll">{{checkedAllMsg}}</van-checkbox>
+      :price="isEdit ? undefined : totalPrice"
+      :label="isEdit ? '' : '合计'"
+      :button-text="isEdit ? '删除' : '提交订单'"
+      @submit="onSubmit"
+    >
+      <span @click="selectAll" class="selectAll">
+        <van-checkbox v-model="checkedAll">{{ checkedAllMsg }}</van-checkbox>
       </span>
     </van-submit-bar>
   </div>
@@ -243,16 +221,17 @@ export default {
       }
     },
     updateCartCountFun(id, count) {
-      clearTimeout(this.timer);
-      this.timer = setTimeout(() => {
-        updateCartCount({ id: id, num: count })
-          .then(result => {
-            console.log(result);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      }, 500);
+      // clearTimeout(this.timer);
+      // this.timer = setTimeout(() => {
+      //   updateCartCount({ id: id, num: count })
+      //     .then(result => {
+      //       console.log(result);
+      //     })
+      //     .catch(error => {
+      //       console.log(error);
+      //     });
+      // }, 500);
+      console.log('update cart:', id, ': ', count);
     },
     onSubmit() {
       if (this.isEdit) {
@@ -335,7 +314,6 @@ export default {
 <style lang="stylus">
 .cart
   margin-bottom 120px
-
 .card-goods
   padding-top 46px
   padding-bottom 0
@@ -357,7 +335,8 @@ export default {
       z-index 1
       margin-top -10px
       position absolute
-
+    .van-card
+      background-color white
     .van-card__price
       color #f44
 
@@ -390,7 +369,7 @@ export default {
     width 30px
     margin 0
 
-.nogood
+.no-good
   position absolute
   width 220px
   text-align center

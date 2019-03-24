@@ -1,12 +1,7 @@
 <template>
   <transition name="slide">
     <div>
-      <van-nav-bar title="地址编辑"
-        left-text="返回"
-        left-arrow
-        @click-left="goBack"
-        :z-index="10"
-        fixed />
+      <van-nav-bar title="地址编辑" left-text="返回" left-arrow @click-left="goBack" :z-index="10" fixed />
     </div>
   </transition>
 </template>

@@ -2,8 +2,8 @@
   <van-card
     class="item-card van-hairline--bottom"
     :thumb="data.coverUrl"
-    tag="全新"
-    desc="上学期上课的教材，九成新，现在随缘出售，想要的先私我。"
+    tag="最新"
+    :desc="data.description"
     :origin-price="data.originalPrice"
   >
     <div slot="tags">

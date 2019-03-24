@@ -1,67 +1,44 @@
 <template>
   <transition name="slide">
     <div class="order">
-      <van-nav-bar title="提交订单"
-        left-text="返回"
-        left-arrow
-        @click-left="goBack"
-        :z-index="10"
-        fixed />
-      <div class="address"
-        @click="goAddressList"
-        :editable="false">
-        <div class="next-icon"
-          v-if="hasDefaultAddress">
+      <van-nav-bar title="提交订单" left-text="返回" left-arrow @click-left="goBack" :z-index="10" fixed />
+      <div class="address" @click="goAddressList" :editable="false">
+        <div class="next-icon" v-if="hasDefaultAddress">
           <van-icon name="arrow" />
         </div>
         <div class="address-item">
           <div address="address-top">
             <van-icon name="location" />
-            <span class="user-info">{{hasDefaultAddress?defaultAddress.Name:'添加收货地址'}}</span>
-            <span class="phonenum"
-              v-if="hasDefaultAddress">{{defaultAddress.Phonenum}}</span>
+            <span class="user-info">{{ hasDefaultAddress ? defaultAddress.addressName : '添加收货地址' }}</span>
+            <span class="phonenum" v-if="hasDefaultAddress">{{ defaultAddress.phone }}</span>
           </div>
-          <div class="address-bottom"
-            v-if="hasDefaultAddress">
-            <div class="address-info">{{defaultAddress.Address}}{{defaultAddress.AddressDetail}}</div>
+          <div class="address-bottom" v-if="hasDefaultAddress">
+            <div class="address-info">{{ defaultAddress.address }}{{ defaultAddress.addressDetail }}</div>
           </div>
         </div>
       </div>
-      <van-panel title="商品"
-        v-for="item in orderGoodList"
-        :key="item.Goodid"
-        class="allGood">
+      <van-panel title="商品" v-for="item in orderBookList" :key="item.id" class="allGood">
         <div class="allGood-item">
-          <van-card :title="item.Goodname"
-            :desc="item.Gooddescribe"
-            :num="item.Cartcount"
-            :price="item.GoodPriceaftersale"
-            :thumb="item.GoodImg" />
+          <van-card
+            :title="item.bookName"
+            :desc="item.description"
+            :num="1"
+            :price="item.sellPrice"
+            :thumb="item.coverUrl"
+          />
           <van-cell-group>
-            <van-cell title="配送方式"
-              :value="item.Gooddealprice>0?'运费 ￥'+item.Gooddealprice:'免运费'" />
-            <van-field v-model="item.message"
-              label="留言"
-              placeholder="点击给买家留言" />
-            <van-cell title="合计"
-              style="color:#f44"
-              :value="'￥'+formatPrice(item.GoodPriceaftersale*item.Cartcount+item.Gooddealprice)" />
+            <van-cell title="配送方式" :value="item.deliveryMethod" />
+            <van-field v-model="item.message" label="留言" placeholder="点击给买家留言" />
+            <van-cell title="合计" style="color:#f44" :value="'￥' + formatPrice(item.sellPrice)" />
           </van-cell-group>
         </div>
       </van-panel>
+
       <van-cell-group class="cell">
-        <van-cell title="优惠券码"
-          is-link
-          value="使用优惠券" />
-      </van-cell-group>
-      <van-cell-group class="cell">
-        <van-switch-cell v-model="checked"
-          title="短信通知收件人" />
+        <van-switch-cell v-model="checked" title="短信通知收件人" />
       </van-cell-group>
       <div class="order-footer">购物愉快~</div>
-      <van-submit-bar :price="totalMoney"
-        button-text="结算"
-        @submit="onSubmit" />
+      <van-submit-bar :price="totalMoney" button-text="结算" @submit="onSubmit" />
     </div>
   </transition>
 </template>
@@ -79,7 +56,7 @@ export default {
     };
   },
   mounted() {
-    if (!this.orderGood.length) {
+    if (!this.orderBook.length) {
       this.$router.push('/');
     } else {
       getAddress()
@@ -87,7 +64,7 @@ export default {
           this.addressList = result.data;
           if (this.addressId) {
             result.data.forEach(item => {
-              if (item.Addressid === this.addressId) {
+              if (item.id === this.addressId) {
                 this.defaultAddress = item;
                 this.hasDefaultAddress = true;
                 return;
@@ -95,7 +72,7 @@ export default {
             });
           } else {
             result.data.forEach(item => {
-              if (item.Isdefault === 1) {
+              if (item.isDefault === true) {
                 this.defaultAddress = item;
                 this.hasDefaultAddress = true;
                 return;
@@ -109,20 +86,20 @@ export default {
     }
   },
   computed: {
-    orderGoodList() {
-      this.orderGood.forEach(item => {
+    orderBookList() {
+      this.orderBook.forEach(item => {
         item.message = '';
       });
-      return this.orderGood;
+      return this.orderBook;
     },
     totalMoney() {
       var total = 0;
-      this.orderGoodList.forEach(item => {
-        total += item.GoodPriceaftersale * item.Cartcount + item.Gooddealprice;
+      this.orderBookList.forEach(item => {
+        total += item.sellPrice;
       });
       return total * 100;
     },
-    ...mapGetters(['orderGood', 'addressId'])
+    ...mapGetters(['orderGood', 'addressId', 'orderBook'])
   },
   methods: {
     onSubmit() {

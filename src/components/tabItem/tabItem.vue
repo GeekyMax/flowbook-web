@@ -2,12 +2,12 @@
   <div class="tab-item">
     <div class="item" v-for="item in data" :key="item.Goodid" @click="showGood(item)">
       <div class="item-detail">
-        <img v-lazy="item.GoodImg" alt="">
-        <div class="desc">{{item.Gooddescribe}}</div>
+        <img v-lazy="item.GoodImg" alt="" />
+        <div class="desc">{{ item.Gooddescribe }}</div>
         <div class="price">
-          <span class="new-price">￥{{item.GoodPrice}}</span>
+          <span class="new-price">￥{{ item.GoodPrice }}</span>
           <span class="old-price">
-            <del>￥{{item.GoodPriceaftersale}}</del>
+            <del>￥{{ item.GoodPriceaftersale }}</del>
           </span>
         </div>
       </div>

@@ -1,7 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import BookList from '@/views/BookList/BookList';
-import Book from '@/views/Book/Book';
 const Home = () => import(/* webpackChunkName: "Home" */ '@/views/Home/Home');
 const Cart = () => import(/* webpackChunkName: "Cart" */ '@/views/Cart/Cart');
 const User = () => import(/* webpackChunkName: "User" */ '@/views/User/User');
@@ -13,15 +11,17 @@ const Order = () => import(/* webpackChunkName: "Order" */ '@/views/Order/Order'
 const AddressList = () => import(/* webpackChunkName: "AddressList" */ '@/views/AddressList/AddressList');
 const EditAddress = () => import(/* webpackChunkName: "EditAddress" */ '@/views/EditAddress/EditAddress');
 const OrderList = () => import(/* webpackChunkName: "OrderList" */ '@/views/OrderList/OrderList');
-
+const Book = () => import('@/views/Book/Book');
+const BookHome = () => import('@/views/BookHome/BookHome');
+const BookList = () => import('@/views/BookList/BookList');
 Vue.use(Router);
 
 export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: Home
+      name: 'BookHome',
+      component: BookHome
     },
     {
       path: '/Cart',

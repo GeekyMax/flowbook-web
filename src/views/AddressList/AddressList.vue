@@ -1,18 +1,15 @@
 <template>
   <transition name="slide">
     <div>
-      <van-nav-bar title="地址列表"
-        left-text="返回"
-        left-arrow
-        @click-left="goBack"
-        :z-index="10"
-        fixed />
-      <van-address-list v-model="chosenAddressId"
+      <van-nav-bar title="地址列表" left-text="返回" left-arrow @click-left="goBack" :z-index="10" fixed />
+      <van-address-list
+        v-model="chosenAddressId"
         class="address-list"
         :list="list"
         @add="onAdd"
         @edit="onEdit"
-        @select="onSelect" />
+        @select="onSelect"
+      />
     </div>
   </transition>
 </template>
@@ -22,7 +19,7 @@ import { mapGetters, mapMutations } from 'vuex';
 export default {
   data() {
     return {
-      chosenAddressId: ''
+      chosenAddressId: 0
     };
   },
   mounted() {
@@ -33,11 +30,14 @@ export default {
     list() {
       var arr = [];
       this.addressList.forEach(item => {
+        if (item.isDefault === true) {
+          this.chosenAddressId = item.id;
+        }
         var obj = {};
-        obj.id = item.Addressid;
-        obj.name = item.Name;
-        obj.tel = item.Phonenum;
-        obj.address = item.Address + item.AddressDetail;
+        obj.id = item.id;
+        obj.name = item.addressName;
+        obj.tel = item.phone;
+        obj.address = item.address + item.addressDetail;
         arr.push(obj);
       });
       return arr;
@@ -47,24 +47,25 @@ export default {
   methods: {
     onAdd() {},
     onEdit(item) {
-      let id = item.id;
-      for (let i = 0; i < this.addressList.length; i++) {
-        if (this.addressList[i].Addressid == id) {
-          var address = this.addressList[i];
-          this.setEditAddress(address);
-          this.$router.push('/EditAddress');
-          break;
-        }
-      }
+      // let id = item.id;
+      // for (let i = 0; i < this.addressList.length; i++) {
+      //   if (this.addressList[i].Addressid == id) {
+      //     var address = this.addressList[i];
+      //     this.setEditAddress(address);
+      //     this.$router.push('/EditAddress');
+      //     break;
+      //   }
+      // }
     },
     onSelect() {
+      console.log('onselect', this.chosenAddressId);
       this.setAddressId(this.chosenAddressId);
     },
     getDefaultId() {
       let id = '';
       for (let i = 0; i < this.addressList.length; i++) {
-        if (this.addressList[i].Isdefault === 1) {
-          id = this.addressList[i].Addressid;
+        if (this.addressList[i].isdefault === 1) {
+          id = this.addressList[i].id;
           break;
         }
       }

@@ -16,6 +16,9 @@ const getters = {
   },
   book: state => {
     return state.book;
+  },
+  orderBook: state =>{
+    return state.orderBook;
   }
 };
 export default getters;

@@ -20,6 +20,9 @@ export default {
   comments: {
     bookItem
   },
+  props: {
+    category: String
+  },
   data: function() {
     return {
       loading: false,
@@ -45,6 +48,7 @@ export default {
         pageNum: this.pageNum,
         pageSize: this.pageSize
       }).then(result => {
+        console.log('load more book', result);
         if (result.code === 0) {
           const data = result.data;
           this.total = data.total;

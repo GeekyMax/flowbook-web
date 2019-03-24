@@ -1,88 +1,66 @@
 <template>
   <transition name="slide">
     <div class="good">
-      <div class="back-btn"
-        @click="goBack">
+      <div class="back-btn" @click="goBack">
         <van-icon name="arrow-left" />
       </div>
-      <van-swipe class="swipe"
-        style="height:375px">
-        <van-swipe-item v-for="item in [1,2,3]"
-          :key="item">
-          <img src="@/images/swipe/swipe1-2.jpg"
-            alt="图片">
+      <van-swipe class="swipe" style="height:375px">
+        <van-swipe-item v-for="item in [1, 2, 3]" :key="item">
+          <img src="@/images/swipe/swipe1-2.jpg" alt="图片" />
         </van-swipe-item>
       </van-swipe>
       <van-cell-group class="good-detail">
         <van-cell>
           <div class="good-title">
-            <span>{{good.Goodname}}</span>
-            <span class="good-price">￥{{good.GoodPriceaftersale}}</span>
+            <span>{{ good.Goodname }}</span>
+            <span class="good-price">￥{{ good.GoodPriceaftersale }}</span>
           </div>
-          <div class="good-desc">{{good.Gooddescribe}}</div>
+          <div class="good-desc">{{ good.Gooddescribe }}</div>
         </van-cell>
         <van-cell class="goods-yunfei">
           <van-row>
-            <van-col span="12"
-              class="goods-yun">运费：{{good.Gooddealprice===0?'免运费':good.Gooddealprice+'元'}}</van-col>
-            <van-col span="12"
-              class="goods-yun">剩余：{{good.Goodcount}}</van-col>
+            <van-col span="12" class="goods-yun"
+              >运费：{{ good.Gooddealprice === 0 ? '免运费' : good.Gooddealprice + '元' }}</van-col
+            >
+            <van-col span="12" class="goods-yun">剩余：{{ good.Goodcount }}</van-col>
           </van-row>
         </van-cell>
       </van-cell-group>
       <van-cell-group class="goods-cell-group dianpu">
-        <van-cell value="商家店铺"
-          icon="shop"
-          is-link>
+        <van-cell value="商家店铺" icon="shop" is-link>
           <template slot="title">
             <span class="van-cell-text">进入店铺</span>
           </template>
         </van-cell>
-        <van-cell title="线下门店"
-          icon="location"
-          is-link />
+        <van-cell title="线下门店" icon="location" is-link />
       </van-cell-group>
       <van-cell-group class="goods-cell-group xiangqing">
-        <van-cell title="查看商品详情"
-          is-link
-          @click="scrollToDetail" />
+        <van-cell title="查看商品详情" is-link @click="scrollToDetail" />
       </van-cell-group>
-      <div class="detail"
-        ref="detail">
-        <img src="@/images/detail/detail-1.jpg"
-          alt="">
-        <img src="@/images/detail/detail-2.jpg"
-          alt="">
-        <img src="@/images/detail/detail-3.jpg"
-          alt="">
-        <img src="@/images/detail/detail-4.jpg"
-          alt="">
-        <img src="@/images/detail/detail-5.jpg"
-          alt="">
-        <img src="@/images/detail/detail-6.jpg"
-          alt="">
+      <div class="detail" ref="detail">
+        <img src="@/images/detail/detail-1.jpg" alt="" />
+        <img src="@/images/detail/detail-2.jpg" alt="" />
+        <img src="@/images/detail/detail-3.jpg" alt="" />
+        <img src="@/images/detail/detail-4.jpg" alt="" />
+        <img src="@/images/detail/detail-5.jpg" alt="" />
+        <img src="@/images/detail/detail-6.jpg" alt="" />
       </div>
       <van-goods-action>
-        <van-goods-action-mini-btn icon="chat"
-          text="客服" />
-        <van-goods-action-mini-btn icon="cart"
-          text="购物车"
-          to="/Cart" />
-        <van-goods-action-mini-btn icon="shop"
-          text="店铺" />
-        <van-goods-action-big-btn @click="showSkuModal"
-          text="加入购物车" />
-        <van-goods-action-big-btn @click="showSkuModal"
-          text="立即购买"
-          primary />
+        <van-goods-action-mini-btn icon="chat" text="客服" />
+        <van-goods-action-mini-btn icon="cart" text="购物车" to="/Cart" />
+        <van-goods-action-mini-btn icon="shop" text="店铺" />
+        <van-goods-action-big-btn @click="showSkuModal" text="加入购物车" />
+        <van-goods-action-big-btn @click="showSkuModal" text="立即购买" primary />
       </van-goods-action>
-      <van-sku v-model="showBase"
+      <van-sku
+        v-model="showBase"
         :sku="sku"
         :goods="good"
         :goods-id="goodsId"
         @buy-clicked="onBuyClicked"
         @add-cart="onAddCartClicked"
-        @stepper-change="getCount" />
+        @stepper-change="getCount"
+      />
     </div>
   </transition>
 </template>

@@ -13,6 +13,7 @@ const state = {
     Isdefault: 0
   },
   addressId: '',
-  book: {}
+  book: {},
+  orderBook: {}
 };
 export default state;
