@@ -17,8 +17,14 @@ const getters = {
   book: state => {
     return state.book;
   },
-  orderBook: state =>{
+  orderBook: state => {
     return state.orderBook;
+  },
+  userInfo: state => {
+    return state.userInfo;
+  },
+  me: state => {
+    return state.me;
   }
 };
 export default getters;

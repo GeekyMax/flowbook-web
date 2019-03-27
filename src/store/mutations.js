@@ -25,6 +25,12 @@ const mutations = {
   },
   [types.SET_ORDER_BOOK_MUTATION](state, payload) {
     state.orderBook = payload;
+  },
+  [types.SET_USER_INFO_MUTATION](state, payload) {
+    state.userInfo = payload;
+  },
+  [types.SET_ME_MUTATION](state,payload){
+    state.me = payload;
   }
 };
 function storeLocalStore(name, state) {

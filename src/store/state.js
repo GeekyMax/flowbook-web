@@ -14,6 +14,22 @@ const state = {
   },
   addressId: '',
   book: {},
-  orderBook: {}
+  orderBook: {},
+  me:{},
+  userInfo: {
+    //   userId: 0,
+    //   username: '',
+    //   realName: '',
+    //   studentId: '',
+    //   sex: 'MALE',
+    //   deliveryAddressList: [],
+    //   description: '',
+    //   avatar: '',
+    //   age: 0,
+    //   residence: '',
+    //   soldCount: 0,
+    //   sellCount: 0,
+    //   wantCount: 0
+  }
 };
 export default state;

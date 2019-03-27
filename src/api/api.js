@@ -18,3 +18,5 @@ export const cors = () => post('cors');
 export const welcome = () => get('welcome');
 
 export const listBook = params => post('listBook', params);
+export const getMeInfo = () => post('me');
+export const logout = () => get('logout');

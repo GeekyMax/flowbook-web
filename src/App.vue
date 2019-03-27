@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <keep-alive include="Home,Cart,User,BookList">
-      <router-view/>
+    <keep-alive include="Home,Cart,BookList">
+      <router-view />
     </keep-alive>
     <Tab v-show="!$route.meta.fullScreen" />
   </div>
