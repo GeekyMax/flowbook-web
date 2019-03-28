@@ -22,19 +22,21 @@
             <van-row class="dealing-row">
               <van-col span="12"
                 ><span class="info-label">交易</span>
-                <span class="info-text">{{ this.book.dealingMethod }}</span></van-col
+                <span class="info-text">{{ this.book.dealingMethod.name }}</span></van-col
               >
               <van-col span="12"
                 ><span class="info-label">类别</span> <span class="info-text">{{ this.book.category }}</span></van-col
               >
-            </van-row>
-            <van-row class="dealing-row">
               <van-col span="12"
-                ><span class="info-label">支持</span>
-                <span class="info-text">{{ this.book.deliveryMethod }}</span></van-col
+                ><span class="info-label">支持</span> <span class="info-text">{{ deliveryMethod }}</span></van-col
               >
-              <van-col span="12"
-                ><span class="info-label">地址</span> <span class="info-text">{{ this.book.address }}</span>
+              <van-col span="12" v-if="isPick"
+                ><span class="info-label">自提</span>
+                <span class="info-text">{{ this.book.pickSchoolAddress.name }}</span>
+              </van-col>
+              <van-col span="24" v-if="isDeliver"
+                ><span class="info-label">配送</span>
+                <span class="info-text">{{ deliveryAddress }}</span>
               </van-col>
             </van-row>
           </van-cell>
@@ -52,7 +54,39 @@
           <van-cell title="查看书籍详情" is-link @click="scrollToDetail" />
         </div>
       </div>
-
+      <van-panel title="书籍参数">
+        <van-cell class="dealing-info">
+          <van-row class="dealing-row">
+            <van-col span="12"
+              ><span class="info-label">成色</span> <span class="info-text">{{ this.book.quality }}</span></van-col
+            >
+            <van-col span="12"
+              ><span class="info-label">版本</span> <span class="info-text">{{ this.book.version }}</span></van-col
+            >
+          </van-row>
+          <van-row class="dealing-row">
+            <van-col span="12"
+              ><span class="info-label">作者</span> <span class="info-text">{{ this.book.author }}</span></van-col
+            >
+            <van-col span="12"
+              ><span class="info-label">isbn</span>
+              <span class="info-text">{{ this.book.isbn }}</span>
+            </van-col>
+          </van-row>
+        </van-cell>
+      </van-panel>
+      <van-panel title="站外链接">
+        <van-cell class="dealing-info">
+          <van-row class="dealing-row">
+            <van-col span="24" v-for="link in this.book.outerLinkList" :key="link"
+              ><span class="info-label">{{ link.title }}</span>
+              <span class="info-text"
+                ><a :href="link.url">{{ link.url }}</a></span
+              ></van-col
+            >
+          </van-row>
+        </van-cell>
+      </van-panel>
       <div class="detail" ref="detail">
         <div class="desc-title">
           <div class="border"></div>
@@ -93,7 +127,8 @@ export default {
     return {
       showBase: false,
       sku: {},
-      good: 1
+      good: 1,
+      activeNames: ['1', '2']
     };
   },
   created() {
@@ -242,6 +277,48 @@ export default {
     sellerAvatar() {
       return this.getSmallRoundAvatarUrl(this.book.pictureUrlList[0]);
     },
+    deliveryMethod() {
+      var str = '';
+      this.book.deliveryMethodList.forEach(item => {
+        if (str !== '') {
+          str += ', ';
+        }
+        str += item.name;
+      });
+      return str;
+    },
+    deliveryAddress() {
+      var str = '';
+      this.book.deliverySchoolAddressList.forEach(item => {
+        if (str !== '') {
+          str += ', ';
+        }
+        str += item.name;
+      });
+      return str;
+    },
+    isPick() {
+      var result = false;
+      if (this.book.deliveryMethodList) {
+        this.book.deliveryMethodList.forEach(item => {
+          if (item.code === 1) {
+            result = true;
+          }
+        });
+      }
+      return result;
+    },
+    isDeliver() {
+      var result = false;
+      if (this.book.deliveryMethodList) {
+        this.book.deliveryMethodList.forEach(item => {
+          if (item.code === 2) {
+            result = true;
+          }
+        });
+      }
+      return result;
+    },
     ...mapGetters(['book'])
   },
   methods: {
@@ -379,4 +456,6 @@ export default {
 .slide-enter, .slide-leave-to
   opacity 0
   transform translate3d(100%, 0, 0)
+.van-panel
+  margin-bottom 8px
 </style>
