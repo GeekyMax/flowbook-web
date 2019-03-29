@@ -27,8 +27,66 @@
             :thumb="item.coverUrl"
           />
           <van-cell-group>
-            <van-cell title="配送方式" :value="item.deliveryMethod" />
-            <van-field v-model="item.message" label="留言" placeholder="点击给买家留言" />
+            <div class="van-cell van-field">
+              <div class="van-cell__title van-field__label"><span>交易方式</span></div>
+              <div class="van-cell__value">
+                <div class="van-field__body">
+                  <input
+                    v-model="order.dealingMethod"
+                    type="text"
+                    placeholder="选择交易方式"
+                    readonly="readonly"
+                    class="van-field__control"
+                    @click="dealingMethodShow = true"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="van-cell van-field">
+              <div class="van-cell__title van-field__label"><span>配送方式</span></div>
+              <div class="van-cell__value">
+                <div class="van-field__body">
+                  <input
+                    type="text"
+                    v-model="order.deliveryMethod"
+                    placeholder="选择配送方式"
+                    readonly="readonly"
+                    class="van-field__control"
+                    @click="deliveryMethodShow = true"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="van-cell van-field" v-if="order.deliveryMethod === '配送'">
+              <div class="van-cell__title van-field__label"><span>配送校区</span></div>
+              <div class="van-cell__value">
+                <div class="van-field__body">
+                  <input
+                    v-model="order.deliverySchoolAddress"
+                    type="text"
+                    placeholder="选择配送校区"
+                    readonly="readonly"
+                    class="van-field__control"
+                    @click="deliverySchoolAddressShow = true"
+                  />
+                </div>
+              </div>
+            </div>
+            <van-field
+              label="详细地址"
+              placeholder="学园 寝室楼号"
+              v-model="order.addressDetail"
+              v-if="order.deliveryMethod === '配送'"
+            ></van-field>
+            <van-field
+              label="自提校区"
+              v-if="order.deliveryMethod === '自取'"
+              :readonly="true"
+              :value="orderBook[0].pickSchoolAddress.name"
+              v-model="order.pickSchoolAddress"
+              placeholder="自提校区"
+            />
+            <van-field v-model="order.comment" label="留言" placeholder="点击给买家留言" />
             <van-cell title="合计" style="color:#f44" :value="'￥' + formatPrice(item.sellPrice)" />
           </van-cell-group>
         </div>
@@ -39,6 +97,30 @@
       </van-cell-group>
       <div class="order-footer">购物愉快~</div>
       <van-submit-bar :price="totalMoney" button-text="结算" @submit="onSubmit" />
+      <van-popup v-model="dealingMethodShow" position="bottom">
+        <van-picker
+          :columns="dealingMethodPicker"
+          show-toolbar
+          @cancel="dealingMethodShow = false"
+          @confirm="confirmDealingMethod"
+        />
+      </van-popup>
+      <van-popup v-model="deliveryMethodShow" position="bottom">
+        <van-picker
+          :columns="deliveryMethodPicker"
+          show-toolbar
+          @cancel="deliveryMethodShow = false"
+          @confirm="confirmDeliveryMethod"
+        />
+      </van-popup>
+      <van-popup v-model="deliverySchoolAddressShow" position="bottom">
+        <van-picker
+          :columns="deliverySchoolAddressPicker"
+          show-toolbar
+          @cancel="deliverySchoolAddressShow = false"
+          @confirm="confirmDeliverySchoolAddress"
+        />
+      </van-popup>
     </div>
   </transition>
 </template>
@@ -46,9 +128,28 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex';
 import { getAddress, createOrder, delFromCart } from '@/api/api';
+import { Toast } from 'vant';
 export default {
   data() {
     return {
+      deliveryMethodIndex: 0,
+      dealingMethodShow: false,
+      deliveryMethodShow: false,
+      deliverySchoolAddressShow: false,
+      dealingMethodPicker: [],
+      deliveryMethodPicker: [],
+      deliverySchoolAddressPicker: [],
+      pickSchoolAddressPicker: [],
+      order: {
+        bookId: '',
+        dealingMethod: '',
+        deliveryMethod: '',
+        deliverySchoolAddress: '',
+        addressDetail: '',
+        pickSchoolAddress: '',
+        comment: ''
+      },
+      show: false,
       checked: true,
       addressList: [],
       hasDefaultAddress: false,
@@ -59,6 +160,7 @@ export default {
     if (!this.orderBook.length) {
       this.$router.push('/');
     } else {
+      // 处理地址
       getAddress()
         .then(result => {
           this.addressList = result.data;
@@ -67,7 +169,6 @@ export default {
               if (item.id === this.addressId) {
                 this.defaultAddress = item;
                 this.hasDefaultAddress = true;
-                return;
               }
             });
           } else {
@@ -75,7 +176,6 @@ export default {
               if (item.isDefault === true) {
                 this.defaultAddress = item;
                 this.hasDefaultAddress = true;
-                return;
               }
             });
           }
@@ -83,7 +183,31 @@ export default {
         .catch(error => {
           console.log(error);
         });
+      // 处理订单
     }
+  },
+  created() {
+    this.order.bookId = this.orderBook[0].id;
+
+    console.log(this.orderBook[0].dealingMethod.code);
+
+    this.order.pickSchoolAddress = this.orderBook[0].pickSchoolAddress.name;
+
+    if (this.orderBook[0].dealingMethod.code === 2) {
+      this.dealingMethodPicker = ['线下交易'];
+    } else if (this.orderBook[0].dealingMethod.code === 1) {
+      this.dealingMethodPicker = ['线上交易'];
+    } else if (this.orderBook[0].dealingMethod.code === 3) {
+      this.dealingMethodPicker = ['线下交易', '线下交易'];
+    }
+    this.deliveryMethodPicker = [];
+    this.orderBook[0].deliveryMethodList.forEach(item => {
+      this.deliveryMethodPicker.push(item.name);
+    });
+    this.deliverySchoolAddressPicker = [];
+    this.orderBook[0].deliverySchoolAddressList.forEach(item => {
+      this.deliverySchoolAddressPicker.push(item.name);
+    });
   },
   computed: {
     orderBookList() {
@@ -102,40 +226,41 @@ export default {
     ...mapGetters(['orderGood', 'addressId', 'orderBook'])
   },
   methods: {
+    confirmDealingMethod(value, index) {
+      this.dealingMethodShow = false;
+      this.order.dealingMethod = value;
+    },
+    confirmDeliveryMethod(value, index) {
+      this.deliveryMethodShow = false;
+      this.order.deliveryMethod = value;
+      this.deliveryMethodIndex = index;
+    },
+    confirmDeliverySchoolAddress(value, index) {
+      this.deliverySchoolAddressShow = false;
+      this.order.deliverySchoolAddress = value;
+    },
+    //todo 字段校验
     onSubmit() {
-      var idStr = '';
-      var countStr = '';
-      var idArr = [];
-      var countArr = [];
-      for (let i = 0; i < this.orderGood.length; i++) {
-        idArr.push(this.orderGood[i].Goodid);
-        countArr.push(this.orderGood[0].Cartcount);
-      }
-      idStr = '(' + idArr.toString() + ')';
-      countStr = '(' + countArr.toString() + ')';
-      var obj = {
-        goodId: idStr,
-        cartCount: countStr,
-        addressId: this.defaultAddress.Addressid,
-        totalMoney: this.totalMoney / 100
-      };
-      createOrder(obj)
+      createOrder(this.order)
         .then(result => {
           console.log(result);
-          this.$toast.success('付款成功~');
-          var params = {
-            delId: idArr
-          };
-          delFromCart(params)
-            .then(result => {
-              console.log(result);
-            })
-            .catch(error => {
-              console.log(error);
-            });
-          setTimeout(() => {
-            this.$router.push('/OrderList');
-          }, 500);
+          if (result.code === 0) {
+            this.$toast.success('付款成功~');
+            this.$router.push('/');
+          }
+          // var params = {
+          //   delId: idArr
+          // };
+          // delFromCart(params)
+          //   .then(result => {
+          //     console.log(result);
+          //   })
+          //   .catch(error => {
+          //     console.log(error);
+          //   });
+          // setTimeout(() => {
+          //   this.$router.push('/OrderList');
+          // }, 500);
         })
         .catch(error => {
           console.log(error);
