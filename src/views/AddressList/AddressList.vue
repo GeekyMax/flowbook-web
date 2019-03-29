@@ -6,7 +6,7 @@
         v-model="chosenAddressId"
         class="address-list"
         :list="list"
-        @add="onAdd"
+        @add="addAddress"
         @edit="onEdit"
         @select="onSelect"
       />
@@ -35,7 +35,7 @@ export default {
         }
         var obj = {};
         obj.id = item.id;
-        obj.name = item.addressName;
+        obj.name = item.name;
         obj.tel = item.phone;
         obj.address = item.address + item.addressDetail;
         arr.push(obj);
@@ -47,24 +47,31 @@ export default {
   methods: {
     onAdd() {},
     onEdit(item) {
-      // let id = item.id;
-      // for (let i = 0; i < this.addressList.length; i++) {
-      //   if (this.addressList[i].Addressid == id) {
-      //     var address = this.addressList[i];
-      //     this.setEditAddress(address);
-      //     this.$router.push('/EditAddress');
-      //     break;
-      //   }
-      // }
+      console.log('on edit' + item.id);
+      let id = item.id;
+      for (let i = 0; i < this.addressList.length; i++) {
+        console.log('this.addressList', this.addressList[i].id);
+        if (this.addressList[i].id === id) {
+          var address = this.addressList[i];
+          this.setEditAddress(address);
+          this.$router.push({
+            path: '/EditAddress',
+            query: {
+              index: item.id
+            }
+          });
+          break;
+        }
+      }
     },
     onSelect() {
       console.log('onselect', this.chosenAddressId);
       this.setAddressId(this.chosenAddressId);
     },
     getDefaultId() {
-      let id = '';
+      let id = 1;
       for (let i = 0; i < this.addressList.length; i++) {
-        if (this.addressList[i].isdefault === 1) {
+        if (this.addressList[i].isDefault === true) {
           id = this.addressList[i].id;
           break;
         }
@@ -73,6 +80,14 @@ export default {
     },
     goBack() {
       this.$router.go(-1);
+    },
+    addAddress() {
+      this.$router.push({
+        path: '/editAddress',
+        query: {
+          new: true
+        }
+      });
     },
     ...mapMutations({
       setAddressId: 'SET_ADDRESSID_MUTATION',

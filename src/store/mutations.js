@@ -7,7 +7,7 @@ const mutations = {
   [types.SET_ORDERGOOD_MUTATION](state, payload) {
     state.orderGood = payload;
   },
-  [types.SET_ADDRESSLIST_MUTATION](state, payload) {
+  [types.SET_ADDRESS_LIST_MUTATION](state, payload) {
     state.addressList = payload;
   },
   [types.SET_EDITADDRESS_MUTATION](state, payload) {
@@ -29,8 +29,15 @@ const mutations = {
   [types.SET_USER_INFO_MUTATION](state, payload) {
     state.userInfo = payload;
   },
-  [types.SET_ME_MUTATION](state,payload){
+  [types.SET_ME_MUTATION](state, payload) {
     state.me = payload;
+  },
+  [types.UPDATE_ADDRESS_MUTATION](state, payload) {
+    for (let i = 0; i < state.addressList.length; i++) {
+      if (state.addressList[i].id === payload.id) {
+        state.addressList[i] = payload;
+      }
+    }
   }
 };
 function storeLocalStore(name, state) {

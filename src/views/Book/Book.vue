@@ -46,7 +46,7 @@
       <!--只有在cell为最后一个元素的时候,不显示下分割线,所以加个div-->
       <div class="more-info-cell ">
         <div>
-          <van-cell is-link title="卖家详情">
+          <van-cell is-link title="卖家详情" @click="onSellerClicked">
             <img class="seller-avatar" :src="sellerAvatar" alt="" />
           </van-cell>
         </div>
@@ -97,22 +97,13 @@
         <img v-for="pic in allUrl" :key="pic" :src="pic" alt="" />
       </div>
       <van-goods-action>
-        <van-goods-action-mini-btn icon="chat" text="消息" />
-        <van-goods-action-mini-btn icon="shop" text="卖家" />
+        <van-goods-action-mini-btn icon="chat" text="消息" to="/message" />
+        <van-goods-action-mini-btn icon="shop" text="卖家" @click="onSellerClicked" />
         <van-goods-action-mini-btn icon="cart" text="购物车" to="/Cart" />
         <!--text="加入购物车"/>-->
-        <van-goods-action-big-btn @click="showSkuModal" text="加入购物车" />
-        <van-goods-action-big-btn @click="showSkuModal" text="立即购买" primary />
+        <van-goods-action-big-btn @click="onAddCartClicked" text="加入购物车" />
+        <van-goods-action-big-btn @click="onBuyClicked" text="立即购买" primary />
       </van-goods-action>
-      <van-sku
-        v-model="showBase"
-        :sku="sku"
-        :goods="this.good"
-        :goods-id="this.book.id"
-        @buy-clicked="onBuyClicked"
-        @add-cart="onAddCartClicked"
-        @stepper-change="getCount"
-      />
     </div>
   </transition>
 </template>
@@ -126,7 +117,6 @@ export default {
   data() {
     return {
       showBase: false,
-      sku: {},
       good: 1,
       activeNames: ['1', '2']
     };
@@ -139,126 +129,6 @@ export default {
     }
   },
   mounted() {
-    this.sku = {
-      tree: [
-        {
-          k: '颜色',
-          k_id: '1',
-          v: [
-            {
-              id: '30349',
-              name: '天蓝色',
-              imgUrl: this.book.coverUrl
-            }
-          ],
-          k_s: 's1',
-          count: 2
-        },
-        {
-          k: '尺寸',
-          k_id: '2',
-          v: [
-            {
-              id: '1193',
-              name: '1'
-            },
-            {
-              id: '1194',
-              name: '2'
-            }
-          ],
-          k_s: 's2',
-          count: 2
-        }
-      ],
-      list: [
-        {
-          id: 2259,
-          price: 100,
-          discount: 100,
-          code: '',
-          s1: '1215',
-          s2: '1193',
-          s3: '0',
-          s4: '0',
-          s5: '0',
-          extend: null,
-          kdt_id: 55,
-          discount_price: 0,
-          stock_num: 110,
-          stock_mode: 0,
-          is_sell: null,
-          combin_sku: false,
-          goods_id: 946755
-        },
-        {
-          id: 2260,
-          price: 100,
-          discount: 100,
-          code: '',
-          s1: '1215',
-          s2: '1194',
-          s3: '0',
-          s4: '0',
-          s5: '0',
-          extend: null,
-          kdt_id: 55,
-          discount_price: 0,
-          stock_num: 0,
-          stock_mode: 0,
-          is_sell: null,
-          combin_sku: false,
-          goods_id: 946755
-        },
-        {
-          id: 2257,
-          price: 100,
-          discount: 100,
-          code: '',
-          s1: '30349',
-          s2: '1193',
-          s3: '0',
-          s4: '0',
-          s5: '0',
-          extend: null,
-          kdt_id: 55,
-          discount_price: 0,
-          stock_num: 999,
-          stock_mode: 0,
-          is_sell: null,
-          combin_sku: false,
-          goods_id: 946755
-        },
-        {
-          id: 2258,
-          price: 100,
-          discount: 100,
-          code: '',
-          s1: '30349',
-          s2: '1194',
-          s3: '0',
-          s4: '0',
-          s5: '0',
-          extend: null,
-          kdt_id: 55,
-          discount_price: 0,
-          stock_num: 655,
-          stock_mode: 0,
-          is_sell: null,
-          combin_sku: false,
-          goods_id: 946755
-        }
-      ],
-      price: this.book.sellPrice,
-      stock_num: 227,
-      collection_id: 2261,
-      collection_price: 0,
-      none_sku: false,
-      sold_num: 0,
-      min_price: '1.00',
-      max_price: '1.00',
-      hide_stock: false
-    };
     this.good = {
       title: this.book.bookName,
       picture: this.book.coverUrl
@@ -343,6 +213,16 @@ export default {
     onBuyClicked() {
       this.setOrderBook([this.book]);
       this.$router.push('/Order');
+    },
+    onSellerClicked() {
+      if (this.book && this.book.id) {
+        this.$router.push({
+          path: '/seller',
+          query: {
+            id: this.book.id
+          }
+        });
+      }
     },
     ...mapMutations({
       setBook: 'SET_GOOD_MUTATION',
@@ -439,6 +319,7 @@ export default {
     background-color grey
 
 .book-desc
+  font-size 14px
   padding 15px
   background-color white
 

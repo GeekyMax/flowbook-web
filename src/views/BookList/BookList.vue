@@ -10,7 +10,7 @@
 
 <script>
 import bookItem from '@/components/bookItem/bookItem';
-import { listBook } from '@/api/api';
+import { listBook, listSellerBook } from '@/api/api';
 import { mapMutations } from 'vuex';
 import GoodItem from '@/components/goodItem/goodItem';
 
@@ -21,7 +21,18 @@ export default {
     bookItem
   },
   props: {
-    category: String
+    category: {
+      type: String,
+      default: ''
+    },
+    sellerId: {
+      type: Number,
+      default: 0
+    },
+    type:{
+      type: String,
+      default: ''
+    }
   },
   data: function() {
     return {
@@ -44,20 +55,41 @@ export default {
         this.loading = false;
         return;
       }
-      listBook({
-        pageNum: this.pageNum,
-        pageSize: this.pageSize
-      }).then(result => {
-        console.log('load more book', result);
-        if (result.code === 0) {
-          const data = result.data;
-          this.total = data.total;
-          this.pageNum = data.nextPage;
-          this.isLastPage = data.isLastPage;
-          this.bookList.push(...data.list);
-        }
-        this.loading = false;
-      });
+      var loadBook = listSellerBook;
+      if (this.sellerId > 0) {
+        loadBook = listSellerBook;
+        loadBook({
+          pageNum: this.pageNum,
+          pageSize: this.pageSize,
+          userId: this.sellerId
+        }).then(result => {
+          console.log('load more book', result);
+          if (result.code === 0) {
+            const data = result.data;
+            this.total = data.total;
+            this.pageNum = data.nextPage;
+            this.isLastPage = data.isLastPage;
+            this.bookList.push(...data.list);
+          }
+          this.loading = false;
+        });
+      } else {
+        loadBook = listBook;
+        loadBook({
+          pageNum: this.pageNum,
+          pageSize: this.pageSize
+        }).then(result => {
+          console.log('load more book', result);
+          if (result.code === 0) {
+            const data = result.data;
+            this.total = data.total;
+            this.pageNum = data.nextPage;
+            this.isLastPage = data.isLastPage;
+            this.bookList.push(...data.list);
+          }
+          this.loading = false;
+        });
+      }
     },
     showBook(book) {
       this.setBook(book);

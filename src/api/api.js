@@ -10,7 +10,6 @@ export const getCart = () => post('getCart');
 export const updateCartCount = params => post('updateCartCount', params);
 export const addToCart = params => post('addToCart', params);
 export const delFromCart = params => post('delFromCart', params);
-export const getAddress = () => post('getAddress');
 export const getOrder = () => post('getOrder');
 export const createOrder = params => post('createOrder', params);
 export const getGoodById = params => post('getGoodById', params);
@@ -20,3 +19,8 @@ export const welcome = () => get('welcome');
 export const listBook = params => post('listBook', params);
 export const getMeInfo = () => post('me');
 export const logout = () => get('logout');
+export const getSellerInfo = params => post('sellerInfo', params);
+export const listSellerBook = params => post('listSellerBook', params);
+
+export const getAddress = () => post('getAddress');
+export const updateAddress = params => post('/updateAddress', params);

@@ -9,7 +9,7 @@
         <div class="address-item">
           <div address="address-top">
             <van-icon name="location" />
-            <span class="user-info">{{ hasDefaultAddress ? defaultAddress.addressName : '添加收货地址' }}</span>
+            <span class="user-info">{{ hasDefaultAddress ? defaultAddress.name : '添加收货地址' }}</span>
             <span class="phonenum" v-if="hasDefaultAddress">{{ defaultAddress.phone }}</span>
           </div>
           <div class="address-bottom" v-if="hasDefaultAddress">
@@ -152,7 +152,7 @@ export default {
       this.$router.go(-1);
     },
     ...mapMutations({
-      setAddressList: 'SET_ADDRESSLIST_MUTATION'
+      setAddressList: 'SET_ADDRESS_LIST_MUTATION'
     })
   }
 };

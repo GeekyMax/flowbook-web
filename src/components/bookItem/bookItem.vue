@@ -14,7 +14,7 @@
         {{ data.category }}
       </van-tag>
       <van-tag round plain v-for="method in data.deliveryMethodList" :key="method">
-        {{ method === 'DELIVER' ? '配送' : '自提' }}
+        {{ method.name }}
       </van-tag>
     </div>
     <div slot="title" class="my-title">
