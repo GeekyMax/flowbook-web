@@ -29,10 +29,8 @@ export default {
   computed: {
     list() {
       var arr = [];
+
       this.addressList.forEach(item => {
-        if (item.isDefault === true) {
-          this.chosenAddressId = item.id;
-        }
         var obj = {};
         obj.id = item.id;
         obj.name = item.name;
@@ -42,7 +40,19 @@ export default {
       });
       return arr;
     },
-    ...mapGetters(['addressList'])
+    ...mapGetters(['addressList', 'addressId'])
+  },
+  mounted() {
+    if (this.addressId > 0) {
+      this.chosenAddressId = this.addressId;
+    } else {
+      console.log(this.addressId);
+      this.addressList.forEach(item => {
+        if (item.isDefault === true) {
+          this.chosenAddressId = item.id;
+        }
+      });
+    }
   },
   methods: {
     onAdd() {},

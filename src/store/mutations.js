@@ -38,6 +38,18 @@ const mutations = {
         state.addressList[i] = payload;
       }
     }
+  },
+  [types.ADD_ADDRESS_MUTATION](state, payload) {
+    state.addressList.push(payload);
+  },
+  [types.REMOVE_ADDRESS_MUTATION](state, payload) {
+    const newAddressList = [];
+    for (let i = 0; i < state.addressList.length; i++) {
+      if (state.addressList[i].id !== payload) {
+        newAddressList.push(state.addressList[i]);
+      }
+    }
+    state.addressList = newAddressList;
   }
 };
 function storeLocalStore(name, state) {

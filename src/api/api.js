@@ -24,3 +24,5 @@ export const listSellerBook = params => post('listSellerBook', params);
 
 export const getAddress = () => post('getAddress');
 export const updateAddress = params => post('/updateAddress', params);
+export const addAddress = params => post('/addAddress', params);
+export const removeAddress = params => post('/removeAddress', params);

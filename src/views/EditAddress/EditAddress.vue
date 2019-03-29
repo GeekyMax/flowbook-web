@@ -46,10 +46,12 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex';
 import { Toast } from 'vant';
-import { updateAddress } from '@/api/api';
+import { addAddress, removeAddress, updateAddress } from '@/api/api';
+import { REMOVE_ADDRESS_MUTATION } from '@/store/mutations-types';
 export default {
   data() {
     return {
+      isNew: false, //1 代表新增.0 其他代表修改
       addressColumns: ['玉泉', '紫金港'],
       schoolList: {
         province_list: {
@@ -87,33 +89,49 @@ export default {
       this.$router.go(-1);
     },
     onSave(content) {
-      updateAddress(this.addressInfo)
-        .then(result => {
+      if (this.isNew) {
+        addAddress(this.addressInfo).then(result => {
           if (result.code === 0) {
-            this.updateAddress(this.addressInfo);
-            Toast('修改成功');
+            this.addAddress(this.addressInfo);
+            Toast('添加成功');
             this.$router.go(-1);
           } else {
             Toast('修改失败');
           }
-        })
-        .catch(err => {
-          Toast(err);
         });
+      } else {
+        updateAddress(this.addressInfo)
+          .then(result => {
+            if (result.code === 0) {
+              this.updateAddressState(this.addressInfo);
+              Toast('修改成功');
+              this.$router.go(-1);
+            } else {
+              Toast('修改失败');
+            }
+          })
+          .catch(err => {
+            Toast(err);
+          });
+      }
     },
     onDelete() {
-      Toast('delete');
-    },
-    onChangeDetail(val) {
-      if (val) {
-        this.searchResult = [
-          {
-            name: '黄龙万科中心',
-            address: '杭州市西湖区'
-          }
-        ];
+      if (this.isNew) {
+        this.$router.go(-1);
       } else {
-        this.searchResult = [];
+        removeAddress({ addressId: this.addressInfo.id })
+          .then(result => {
+            if (result.code === 0) {
+              this.removeAddressState(this.addressInfo.id);
+              Toast('删除成功');
+              this.$router.go(-1);
+            } else {
+              Toast('删除失败');
+            }
+          })
+          .catch(err => {
+            Toast(err);
+          });
       }
     },
     clickAddress() {
@@ -125,11 +143,18 @@ export default {
       this.addressInfo.address = value;
     },
     ...mapMutations({
-      updateAddress: 'UPDATE_ADDRESS_MUTATION'
+      updateAddressState: 'UPDATE_ADDRESS_MUTATION',
+      removeAddressState: 'REMOVE_ADDRESS_MUTATION',
+      addAddress: 'ADD_ADDRESS_MUTATION'
     })
   },
   created() {
-    this.addressInfo = this.editAddress;
+    let n = this.$route.query.new;
+    if (n != null) {
+      this.isNew = true;
+    } else {
+      this.addressInfo = this.editAddress;
+    }
   }
 };
 </script>
