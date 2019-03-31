@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import SellerHome from '@/views/SellerHome/SellerHome';
+import OrderDetail from '@/views/OrderDetail/OrderDetail';
 const Home = () => import(/* webpackChunkName: "Home" */ '@/views/Home/Home');
 const Cart = () => import(/* webpackChunkName: "Cart" */ '@/views/Cart/Cart');
 const User = () => import(/* webpackChunkName: "User" */ '@/views/User/User');
@@ -115,6 +116,14 @@ export default new Router({
       path: '/seller',
       name: 'SellerHome',
       component: SellerHome,
+      meta: {
+        fullScreen: true
+      }
+    },
+    {
+      path: '/orderDetail',
+      name: 'OrderDetail',
+      component: OrderDetail,
       meta: {
         fullScreen: true
       }

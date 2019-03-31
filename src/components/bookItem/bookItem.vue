@@ -27,11 +27,7 @@
 <script>
 export default {
   props: {
-    data: Object,
-    moreRoute: {
-      type: String,
-      default: ''
-    }
+    data: Object
   },
   computed: {
     commodityType() {

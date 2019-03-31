@@ -1,6 +1,9 @@
 <template>
   <transition name="slide">
-    <div class="book">
+    <div class="index-loading" v-if="!book.id">
+      <img src="/bars.svg" width="40" alt="" />
+    </div>
+    <div class="book" v-if="this.book.id">
       <div class="back-btn" @click="goBack">
         <van-icon name="arrow-left" />
       </div>
@@ -18,7 +21,7 @@
               <strike class="original-price">原价￥{{ book.originalPrice }}</strike>
             </div>
           </van-cell>
-          <van-cell class="dealing-info">
+          <van-cell class="dealing-info" v-if="this.book.deliveryMethod">
             <van-row class="dealing-row">
               <van-col span="12"
                 ><span class="info-label">交易</span>
@@ -44,7 +47,7 @@
       </div>
 
       <!--只有在cell为最后一个元素的时候,不显示下分割线,所以加个div-->
-      <div class="more-info-cell ">
+      <div class="more-info-cell " v-if="this.book.id">
         <div>
           <van-cell is-link title="卖家详情" @click="onSellerClicked">
             <img class="seller-avatar" :src="sellerAvatar" alt="" />
@@ -111,29 +114,49 @@
 <script>
 import { mapGetters } from 'vuex';
 import { mapMutations } from 'vuex';
+import { getBook } from '@/api/api';
+import { Toast } from 'vant';
 
 export default {
   name: 'Book',
   data() {
     return {
+      book: {
+        id: false,
+        userId: 0,
+        commodityType: {},
+        bookName: '',
+        originalPrice: 0,
+        sellPrice: 0,
+        category: '',
+        description: '',
+        isbn: '',
+        quality: 0,
+        version: '',
+        author: '',
+        createTime: '',
+        updateTime: '',
+        pictureUrlList: [],
+        outerLinkList: [],
+        coverUrl: '',
+        dealingMethod: [],
+        deliveryMethodList: [],
+        deliverySchoolAddressList: [],
+        pickSchoolAddress: {}
+      },
+      bookId: 0,
       showBase: false,
-      good: 1,
       activeNames: ['1', '2']
     };
   },
   created() {
     console.log(this.book);
-    if (!this.book.id) {
-      console.log('load book');
-      this.setBook(JSON.parse(localStorage.getItem('book')));
+    this.bookId = parseInt(this.$route.query.bookId);
+    if (this.book.id !== this.bookId) {
+      this.downloadBook(this.bookId);
     }
   },
-  mounted() {
-    this.good = {
-      title: this.book.bookName,
-      picture: this.book.coverUrl
-    };
-  },
+  mounted() {},
   computed: {
     allUrl() {
       var newList = [];
@@ -188,10 +211,24 @@ export default {
         });
       }
       return result;
-    },
-    ...mapGetters(['book'])
+    }
+    // ,
+    // ...mapGetters(['book'])
   },
   methods: {
+    downloadBook(id) {
+      getBook({ id: id })
+        .then(result => {
+          if (result.code === 0) {
+            this.book = result.data;
+          } else {
+            Toast('图书信息获取失败');
+          }
+        })
+        .catch(err => {
+          Toast(err);
+        });
+    },
     getMainUrl(url) {
       return url + '_main-800';
     },
@@ -219,7 +256,7 @@ export default {
         this.$router.push({
           path: '/seller',
           query: {
-            id: this.book.id
+            id: this.book.userId
           }
         });
       }
@@ -339,4 +376,9 @@ export default {
   transform translate3d(100%, 0, 0)
 .van-panel
   margin-bottom 8px
+.index-loading
+  position absolute
+  top 50%
+  left 50%
+  transform translate(-50%, -50%)
 </style>

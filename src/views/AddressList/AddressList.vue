@@ -22,10 +22,6 @@ export default {
       chosenAddressId: 0
     };
   },
-  mounted() {
-    this.getDefaultId();
-    console.log(this.chosenAddressId);
-  },
   computed: {
     list() {
       var arr = [];
@@ -43,6 +39,8 @@ export default {
     ...mapGetters(['addressList', 'addressId'])
   },
   mounted() {
+    this.getDefaultId();
+    console.log(this.chosenAddressId);
     if (this.addressId > 0) {
       this.chosenAddressId = this.addressId;
     } else {

@@ -29,7 +29,7 @@ export default {
       type: Number,
       default: 0
     },
-    type:{
+    type: {
       type: String,
       default: ''
     }
@@ -92,11 +92,16 @@ export default {
       }
     },
     showBook(book) {
-      this.setBook(book);
-      this.$router.push('/book');
+      // this.setBook(book);
+      this.$router.push({
+        path: '/book',
+        query: {
+          bookId: book.id
+        }
+      });
     },
     ...mapMutations({
-      setBook: 'SET_GOOD_MUTATION_WITH_SAVE'
+      setBook: 'SET_GOOD_MUTATION'
     })
   }
 };

@@ -1,39 +1,17 @@
 <template>
   <transition name="slide">
-    <div class="orderlist">
-      <van-nav-bar title="全部订单"
-        left-text="返回"
-        left-arrow
-        @click-left="goBack"
-        :z-index="10"
-        fixed />
+    <div class="order-list">
+      <van-nav-bar title="全部订单" left-text="返回" left-arrow @click-left="goBack" :z-index="10" fixed />
       <div class="list-box">
-        <van-panel title="订单"
-          class="list"
-          v-for="item1 in orderList"
-          :key="item1.Orderid">
-          <van-card v-for="item2 in item1.good"
-            class="list-item"
-            :key="item2.Goodid"
-            :title="item2.Goodname.substr(0,10)"
-            :desc="item2.Gooddescribe"
-            :num="item2.orderCount"
-            :price="item2.GoodPriceaftersale"
-            :thumb="item2.GoodImg">
-            <div slot="footer">
-              <van-button size="mini"
-                @click="goGood(item2)">查看商品</van-button>
-            </div>
-          </van-card>
-          <van-cell-group>
-            <van-cell title="合计"
-              style="color:#f44"
-              :value="'￥'+formatPrice(item1.totalMoney)" />
-          </van-cell-group>
-        </van-panel>
+        <order-item
+          v-for="item in orderList"
+          :key="item"
+          :data="item"
+          :with-footer="true"
+          class="van-hairline--bottom"
+        ></order-item>
       </div>
-      <div class="order-footer"
-        v-if="orderList.length>3">到底了~</div>
+      <div class="order-footer" v-if="orderList.length > 3">到底了~</div>
     </div>
   </transition>
 </template>
@@ -41,37 +19,39 @@
 <script>
 import { mapMutations } from 'vuex';
 import { getOrder, getGoodById } from '@/api/api';
+import OrderItem from '@/components/OrderItem/OrderItem';
 export default {
+  components: { OrderItem },
   data() {
     return {
       orderList: []
     };
   },
   mounted() {
-    getOrder()
+    getOrder({})
       .then(async result => {
-        for (let i = 0; i < result.data.length; i++) {
-          var idArr = result.data[i].Goodid.substring(1, result.data[i].Goodid.length - 1).split(',');
-          var countArr = result.data[i].Ordercount.substring(1, result.data[i].Ordercount.length - 1).split(',');
-          idArr = idArr.map(item => {
-            return parseInt(item);
-          });
-          countArr = countArr.map(item => {
-            return parseInt(item);
-          });
-          var mapped = {};
-          for (let j = 0; j < idArr.length; j++) {
-            mapped[idArr[j]] = countArr[j];
-          }
-          let { data } = await getGoodById({
-            goodId: idArr
-          });
-          for (let k = 0; k < data.length; k++) {
-            data[k].orderCount = mapped[data[k].Goodid];
-          }
-          result.data[i].good = data;
-        }
-        this.orderList = result.data.reverse();
+        // for (let i = 0; i < result.data.list.length; i++) {
+        //   var idArr = result.data[i].Goodid.substring(1, result.data[i].Goodid.length - 1).split(',');
+        //   var countArr = result.data[i].Ordercount.substring(1, result.data[i].Ordercount.length - 1).split(',');
+        //   idArr = idArr.map(item => {
+        //     return parseInt(item);
+        //   });
+        //   countArr = countArr.map(item => {
+        //     return parseInt(item);
+        //   });
+        //   var mapped = {};
+        //   for (let j = 0; j < idArr.length; j++) {
+        //     mapped[idArr[j]] = countArr[j];
+        //   }
+        //   let { data } = await getGoodById({
+        //     goodId: idArr
+        //   });
+        //   for (let k = 0; k < data.length; k++) {
+        //     data[k].orderCount = mapped[data[k].Goodid];
+        //   }
+        //   result.data[i].good = data;
+        // }
+        this.orderList = result.data.list;
         console.log(this.orderList);
       })
       .catch(error => {
@@ -96,8 +76,8 @@ export default {
 };
 </script>
 <style lang="stylus" scoped>
-.orderlist
-  background-color #eee
+.order-list
+  background-color #f5f5f5
 
 .list-box
   padding-top 46px
