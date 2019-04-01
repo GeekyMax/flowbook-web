@@ -3,6 +3,7 @@
     <van-nav-bar :title="toUser" left-text="返回" left-arrow @click-left="goBack" z-index="200" />
     <div class="container">
       <wx-chat
+        id="wx-chat"
         class="wx-chat"
         :data-array="wxChatData"
         :showShade="false"
@@ -41,7 +42,6 @@ export default {
   components: { WxChat },
   data() {
     return {
-      wxChatSet: {},
       nextPage: 1,
       toUser: '',
       content: '',
@@ -61,11 +61,6 @@ export default {
       var username = window.localStorage.getItem('username');
       this.setUsername(username);
     }
-    this.wxChatSet = new SortedSet({
-      comparator: function(a, b) {
-        return a.id - b.id;
-      }
-    });
     this.connect();
   },
 
@@ -113,14 +108,13 @@ export default {
       console.log('Disconnected');
     },
     sendToUser() {
-      this.wxChatSet.forEach(item => {
-        console.log(item);
-      });
-      console.log(this.wxChatSet.map(x => x));
+      // 空消息 不发送
       if (this.content.trim() === '') {
         this.content = '';
+        this.scrollToBottom();
         return;
       }
+      // 发送ws
       this.stompClient.send(
         '/app/chat',
         JSON.stringify({
@@ -133,28 +127,16 @@ export default {
       this.content = '';
     },
     showMessage(message) {
-      console.log(
-        'id ' +
-          message.id +
-          ' message from ' +
-          message.senderName +
-          ' to ' +
-          message.receiverName +
-          ': ' +
-          message.content +
-          ' at ' +
-          message.sendTime
-      );
       this.messageList.push(message);
-      var newMessage = {
+      const newMessage = {
         direction: message.senderName === this.username ? 2 : 1,
         type: 1,
         id: message.id,
         content: message.content,
         ctime: message.sendTime
       };
-      this.wxChatSet.insert(newMessage);
       this.wxChatData.push(newMessage);
+      this.scrollToBottom();
     },
     getUnderData() {},
     getUpperData() {
@@ -171,6 +153,7 @@ export default {
     goBack() {
       this.$router.go(-1);
     },
+    // 获取历史消息
     getMessageHistory() {
       if (this.nextPage === 0) {
         return false;
@@ -186,6 +169,13 @@ export default {
         {}
       );
       return true;
+    },
+    scrollToBottom() {
+      this.$nextTick(() => {
+        const id = 'scrollLoader-container';
+        const element = document.getElementById(id);
+        element.scrollTop = element.scrollHeight;
+      });
     },
     ...mapMutations({
       setUsername: 'SET_USERNAME_MUTATION'
