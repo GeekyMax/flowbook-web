@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import SortedSet from 'js-sorted-set';
 import { mapGetters, mapMutations } from 'vuex';
 import SockJS from 'sockjs-client';
 import Stomp from 'webstomp-client';
@@ -42,6 +41,8 @@ export default {
   components: { WxChat },
   data() {
     return {
+      scrollElement: {},
+      onBottom: false,
       nextPage: 1,
       toUser: '',
       content: '',
@@ -63,7 +64,9 @@ export default {
     }
     this.connect();
   },
-
+  mounted() {
+    this.scrollElement = this.$refs['scrollLoader-container'];
+  },
   beforeDestroy() {
     this.disconnect();
   },
@@ -73,18 +76,17 @@ export default {
 
       this.stompClient = Stomp.over(this.socket);
       this.stompClient.connect({}, frame => {
+        // 订阅一般消息
         this.stompClient.subscribe('/user/topic/private', greeting => {
           const parse = JSON.parse(greeting.body);
           this.showMessage(parse);
         });
+        // 订阅历史消息
         this.stompClient.subscribe('/user/topic/history', data => {
           console.log(data);
           const parse = JSON.parse(data.body);
           if (parse && parse.messageList) {
-            // parse.messageList.list.forEach(item => {
-            //   this.showMessage(item);
-            // });
-            var newList = [];
+            const newList = [];
             parse.messageList.list.forEach(message => {
               newList.push({
                 direction: message.senderName === this.username ? 2 : 1,
@@ -127,6 +129,16 @@ export default {
       this.content = '';
     },
     showMessage(message) {
+      if (!this.scrollElement) {
+        this.scrollElement = document.getElementById('scrollLoader-container');
+      }
+      if (this.scrollElement) {
+        console.log(this.scrollElement.scrollTop);
+        console.log(this.scrollElement.clientHeight);
+        console.log(this.scrollElement.scrollHeight);
+        this.onBottom =
+          this.scrollElement.scrollTop + this.scrollElement.clientHeight === this.scrollElement.scrollHeight;
+      }
       this.messageList.push(message);
       const newMessage = {
         direction: message.senderName === this.username ? 2 : 1,
@@ -172,9 +184,10 @@ export default {
     },
     scrollToBottom() {
       this.$nextTick(() => {
-        const id = 'scrollLoader-container';
-        const element = document.getElementById(id);
-        element.scrollTop = element.scrollHeight;
+        if (this.scrollElement && this.onBottom) {
+          console.log('scroll to bottom');
+          this.scrollElement.scrollTop = this.scrollElement.scrollHeight;
+        }
       });
     },
     ...mapMutations({
