@@ -25,6 +25,18 @@ const getters = {
   },
   me: state => {
     return state.me;
+  },
+  username: state => {
+    console.log(state.username);
+    if (state.username === null && state.username === '') {
+      const username = window.localStorage.getItem('username');
+      if (username) {
+        state.username = username;
+        return username;
+      }
+      return '';
+    }
+    return state.username;
   }
 };
 export default getters;

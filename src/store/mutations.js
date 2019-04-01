@@ -1,6 +1,10 @@
 import * as types from './mutations-types';
 
 const mutations = {
+  [types.SET_USERNAME_MUTATION](state, payload) {
+    state.username = payload;
+    storeLocalStore('username', state.username);
+  },
   [types.SET_GOOD_MUTATION](state, payload) {
     state.good = payload;
   },
@@ -54,7 +58,7 @@ const mutations = {
 };
 function storeLocalStore(name, state) {
   console.log('save ' + name);
-  window.localStorage.setItem(name, JSON.stringify(state));
+  window.localStorage.setItem(name, state);
 }
 
 export default mutations;

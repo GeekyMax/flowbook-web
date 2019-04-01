@@ -69,7 +69,7 @@ export default {
       if (this.me.userInfo) {
         return this.me.userInfo.avatar + '_avatar-round-120';
       } else {
-        return 'https://flowbook-pic.oss-cn-hangzhou.aliyuncs.com/avatar/default-user.png_avatar-round-120';
+        return 'https://flowbook-pic.oss-cn-hangzhou.aliyuncs.com/avatar/default.jpg_avatar-round-120';
       }
     },
     username() {

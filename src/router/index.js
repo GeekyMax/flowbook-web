@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import SellerHome from '@/views/SellerHome/SellerHome';
 import OrderDetail from '@/views/OrderDetail/OrderDetail';
+import Chat from '@/views/Chat/Chat';
 const Home = () => import(/* webpackChunkName: "Home" */ '@/views/Home/Home');
 const Cart = () => import(/* webpackChunkName: "Cart" */ '@/views/Cart/Cart');
 const User = () => import(/* webpackChunkName: "User" */ '@/views/User/User');
@@ -19,11 +20,20 @@ const BookList = () => import('@/views/BookList/BookList');
 Vue.use(Router);
 
 export default new Router({
+  beforeEach: (to, from, next) => {
+    if (to.meta.title) {
+      document.title = to.meta.title;
+    }
+    next();
+  },
   routes: [
     {
       path: '/',
       name: 'BookHome',
-      component: BookHome
+      component: BookHome,
+      meta: {
+        title: 'flowbook 首页'
+      }
     },
     {
       path: '/Cart',
@@ -126,6 +136,15 @@ export default new Router({
       component: OrderDetail,
       meta: {
         fullScreen: true
+      }
+    },
+    {
+      path: '/chat',
+      name: 'Chat',
+      component: Chat,
+      meta: {
+        fullScreen: true,
+        title: 'flowbook 聊天界面'
       }
     }
   ],

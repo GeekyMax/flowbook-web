@@ -1,4 +1,5 @@
 const state = {
+  username: '',
   good: {},
   orderGood: {},
   addressList: [],
@@ -15,7 +16,7 @@ const state = {
   addressId: '',
   book: {},
   orderBook: {},
-  me:{},
+  me: {},
   userInfo: {
     //   userId: 0,
     //   username: '',

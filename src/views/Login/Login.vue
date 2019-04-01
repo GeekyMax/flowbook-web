@@ -3,9 +3,23 @@
     <div class="login">
       <h1>登陆商城</h1>
       <van-cell-group class="login-from">
-        <van-field v-model="username" clearable border label="邮箱" placeholder="请输入邮箱" :error-message="usernameErr"/>
-        <van-field v-model="password" clearable border type="password" label="密码" placeholder="请输入密码"
-                   :error-message="passwordErr"/>
+        <van-field
+          v-model="username"
+          clearable
+          border
+          label="邮箱"
+          placeholder="请输入邮箱"
+          :error-message="usernameErr"
+        />
+        <van-field
+          v-model="password"
+          clearable
+          border
+          type="password"
+          label="密码"
+          placeholder="请输入密码"
+          :error-message="passwordErr"
+        />
         <van-cell>
           <van-row>
             <van-col span="12" class="btn">
@@ -24,6 +38,7 @@
 <script>
 import { cors, login, welcome } from '@/api/api';
 import { Toast } from 'vant';
+import { mapMutations } from 'vuex';
 
 export default {
   data() {
@@ -55,6 +70,7 @@ export default {
           console.log(res);
           if (res.code === 0) {
             this.loading = false;
+            this.setUsername(this.username);
             this.$router.push('/');
           } else {
             this.loading = false;
@@ -69,39 +85,42 @@ export default {
     reg() {
       // this.$router.push('/reg');
       cors().then(res => {});
-    }
+    },
+    ...mapMutations({
+      setUsername: 'SET_USERNAME_MUTATION'
+    })
   }
 };
 </script>
 
 <style lang="stylus" scoped>
-  .login
-    width 100%
-    height 100%
+.login
+  width 100%
+  height 100%
+  text-align center
+  /*background url('./../../images/bgc/bgc.jpg')*/
+  /*background-repeat no-repeat*/
+  /*background-size cover*/
+  overflow hidden
+
+  h1
+    margin-top 40%
+
+.login-from
+  width 80%
+  text-align center
+  padding 10px
+  margin 0 auto
+  box-shadow 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 8px 0 rgba(0, 0, 0, 0.19)
+
+  .btn
     text-align center
-    /*background url('./../../images/bgc/bgc.jpg')*/
-    /*background-repeat no-repeat*/
-    /*background-size cover*/
-    overflow hidden
+    margin-top 10px
 
-    h1
-      margin-top 40%
+.slide-enter-active, .slide-leave-active
+  transition all 0.5s
 
-  .login-from
-    width 80%
-    text-align center
-    padding 10px
-    margin 0 auto
-    box-shadow 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 8px 0 rgba(0, 0, 0, 0.19)
-
-    .btn
-      text-align center
-      margin-top 10px
-
-  .slide-enter-active, .slide-leave-active
-    transition all 0.5s
-
-  .slide-enter, .slide-leave-to
-    opacity 0
-    transform translate3d(100%, 0, 0)
+.slide-enter, .slide-leave-to
+  opacity 0
+  transform translate3d(100%, 0, 0)
 </style>
