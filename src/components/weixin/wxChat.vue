@@ -391,6 +391,7 @@ export default {
 
     //向上拉刷新
     refresh(done) {
+      console.log('刷新');
       const me = this;
       if (me.isUpperLaoding) {
         return;
@@ -403,12 +404,10 @@ export default {
       }
 
       try {
-        this.getUpperData().then(function(data) {
-          if (data.length === 0) {
-            me.isRefreshedAll = true;
+        this.getUpperData().then(function(end) {
+          if (end) {
             done(true);
           } else {
-            me.dataArray = data.reverse().concat(me.dataArray); //倒序合并
             done();
           }
         });

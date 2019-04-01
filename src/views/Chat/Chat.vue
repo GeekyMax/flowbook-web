@@ -42,7 +42,6 @@ export default {
   data() {
     return {
       wxChatSet: {},
-      loading: false,
       nextPage: 1,
       toUser: '',
       content: '',
@@ -102,7 +101,6 @@ export default {
             });
             this.wxChatData = newList.reverse().concat(this.wxChatData);
             this.nextPage = parse.messageList.nextPage;
-            this.loading = false;
           }
         });
         this.getMessageHistory();
@@ -160,25 +158,34 @@ export default {
     },
     getUnderData() {},
     getUpperData() {
-      return new Promise(this.getMessageHistory);
+      return new Promise(resolve => {
+        if (this.getMessageHistory()) {
+          // 未到底
+          resolve(false);
+        } else {
+          // 到底了
+          resolve(true);
+        }
+      });
     },
     goBack() {
       this.$router.go(-1);
     },
     getMessageHistory() {
-      if (this.loading) {
-        return;
+      if (this.nextPage === 0) {
+        return false;
       }
       this.stompClient.send(
         '/app/history',
         JSON.stringify({
           senderName: this.username,
           receiverName: this.toUser,
-          pageNum: this.nextPage
+          pageNum: this.nextPage,
+          pageSize: 5
         }),
         {}
       );
-      this.loading = true;
+      return true;
     },
     ...mapMutations({
       setUsername: 'SET_USERNAME_MUTATION'
