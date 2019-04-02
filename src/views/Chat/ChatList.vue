@@ -4,7 +4,13 @@
       <van-nav-bar title="消息" />
     </div>
     <div>
-      <chat-list-item v-for="chat in this.chatList" :key="chat" :user-id="userId" :chat="chat" />
+      <chat-list-item
+        v-for="chat in this.chatList"
+        :key="chat"
+        :user-id="userId"
+        :chat="chat"
+        v-if="chat.messageList.length > 0"
+      />
     </div>
   </div>
 </template>

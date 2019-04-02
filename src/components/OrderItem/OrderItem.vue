@@ -12,7 +12,7 @@
     <div slot="price" class="my-price"><span class="my-price-label">总计: </span>￥{{ data.price }}</div>
     <div slot="footer" v-if="withFooter">
       <van-button size="small" @click="showOrderDetail(item)" round plain class="footer-btn"> 订单详情</van-button>
-      <van-button size="small" round plain class="footer-btn"> 联系卖家</van-button>
+      <van-button size="small" round plain class="footer-btn" @click="goChat"> 联系卖家</van-button>
       <van-button size="small" type="warning" round plain class="footer-btn">确认收货</van-button>
     </div>
   </van-card>
@@ -34,6 +34,14 @@ export default {
         path: '/orderDetail',
         query: {
           orderId: this.data.id
+        }
+      });
+    },
+    goChat() {
+      this.$router.push({
+        path: '/chat',
+        query: {
+          userId: this.data.book.userId
         }
       });
     }

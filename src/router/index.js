@@ -143,7 +143,7 @@ export default new Router({
     {
       path: '/chat',
       name: 'Chat',
-      component: Chat,
+      component: NewChat,
       meta: {
         fullScreen: true,
         title: 'flowbook 聊天界面'

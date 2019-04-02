@@ -74,7 +74,7 @@ export default {
   methods: {
     goChat() {
       this.$router.push({
-        path: '/newChat',
+        path: '/chat',
         query: {
           userId: this.toUser.userId
         }

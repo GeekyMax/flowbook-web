@@ -19,7 +19,7 @@
       ><div slot class="my-price">￥{{ order.price }}</div>
     </van-cell>
     <van-cell class="footer">
-      <van-button round size="small" class="footer-btn">删除订单</van-button>
+      <van-button round size="small" class="footer-btn" @click="goChat">联系卖家</van-button>
       <van-button round size="small" class="footer-btn" @click="goBook">查看商品</van-button>
       <van-button type="danger" round size="small" class="footer-btn" plain>去评价</van-button>
       <van-button type="danger" round size="small" class="footer-btn">确认收货</van-button>
@@ -58,6 +58,14 @@ export default {
   methods: {
     goBack() {
       this.$router.go(-1);
+    },
+    goChat() {
+      this.$router.push({
+        path: '/chat',
+        query: {
+          userId: this.order.sellerId
+        }
+      });
     },
     goBook() {
       this.$router.push({

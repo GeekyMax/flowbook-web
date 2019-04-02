@@ -100,7 +100,7 @@
         <img v-for="pic in allUrl" :key="pic" :src="pic" alt="" />
       </div>
       <van-goods-action>
-        <van-goods-action-mini-btn icon="chat" text="消息" to="/message" />
+        <van-goods-action-mini-btn icon="chat" text="消息" @click="onMessageClicked" />
         <van-goods-action-mini-btn icon="shop" text="卖家" @click="onSellerClicked" />
         <van-goods-action-mini-btn icon="cart" text="购物车" to="/Cart" />
         <!--text="加入购物车"/>-->
@@ -260,6 +260,14 @@ export default {
           }
         });
       }
+    },
+    onMessageClicked() {
+      this.$router.push({
+        path: '/chat',
+        query: {
+          userId: this.book.userId
+        }
+      });
     },
     ...mapMutations({
       setBook: 'SET_GOOD_MUTATION',
