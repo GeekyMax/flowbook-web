@@ -1,0 +1,63 @@
+<template>
+  <div class="container">
+    <div>
+      <van-nav-bar title="消息" />
+    </div>
+    <div>
+      <chat-list-item v-for="chat in this.chatList" :key="chat" :user-id="userId" :chat="chat" />
+    </div>
+  </div>
+</template>
+
+<script>
+import ChatListItem from '@/views/Chat/ChatListItem';
+import Stomp from 'webstomp-client';
+import SockJS from 'sockjs-client';
+
+export default {
+  name: 'ChatList',
+  components: { ChatListItem },
+  data() {
+    return {
+      userId: 0,
+      socket: {},
+      stompClient: {},
+      chatList: []
+    };
+  },
+  created() {
+    this.connect();
+  },
+  methods: {
+    connect() {
+      this.socket = new SockJS('http://localhost:8080/flowbook-ws');
+
+      this.stompClient = Stomp.over(this.socket);
+      this.stompClient.connect({}, frame => {
+        // 订阅初始会话列表消息
+        this.stompClient.subscribe('/user/topic/init', greeting => {
+          const parse = JSON.parse(greeting.body);
+          console.log('get init list: ', parse);
+          this.userId = parse.userId;
+          this.chatList = parse.chatList;
+        });
+        this.initMessageList();
+      });
+    },
+    initMessageList() {
+      this.stompClient.send(
+        '/app/init',
+        JSON.stringify({
+          userId: 0
+        })
+      );
+    }
+  }
+};
+</script>
+
+<style scoped lang="stylus">
+.container
+  height 100%
+  background-color #f5f5f5
+</style>

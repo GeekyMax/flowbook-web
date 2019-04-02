@@ -1,34 +1,36 @@
 <template>
-  <div>
-    <van-nav-bar :title="toUserInfo.username" left-text="返回" left-arrow @click-left="goBack" z-index="200" />
-    <div class="container">
-      <wx-chat
-        id="wx-chat"
-        class="wx-chat"
-        :data-array="messageList"
-        :showShade="false"
-        :getUpperData="getUpperData"
-        :getUnderData="getUnderData"
-        ownerAvatarUrl="https://flowbook-pic.oss-cn-hangzhou.aliyuncs.com/avatar/default.jpg"
-        contactAvatarUrl="https://flowbook-pic.oss-cn-hangzhou.aliyuncs.com/avatar/default.jpg"
-        width="100%"
-      >
-      </wx-chat>
-      <div class="send-footer van-hairline--top">
-        <van-field
-          v-model="input"
-          placeholder="输入内容"
-          type="textarea"
-          class="send-text"
-          rows="1"
-          border
-          :autosize="{ maxHeight: 24, minHeight: 24 }"
-        />
-        <van-button @click="onSendClick" class="send-btn" type="info" round>发送</van-button>
+  <transition name="slide">
+    <div>
+      <van-nav-bar :title="toUserInfo.username" left-text="返回" left-arrow @click-left="goBack" z-index="200" />
+      <div class="container">
+        <wx-chat
+          id="wx-chat"
+          class="wx-chat"
+          :data-array="messageList"
+          :showShade="false"
+          :getUpperData="getUpperData"
+          :getUnderData="getUnderData"
+          ownerAvatarUrl="https://flowbook-pic.oss-cn-hangzhou.aliyuncs.com/avatar/default.jpg"
+          contactAvatarUrl="https://flowbook-pic.oss-cn-hangzhou.aliyuncs.com/avatar/default.jpg"
+          width="100%"
+        >
+        </wx-chat>
+        <div class="send-footer van-hairline--top">
+          <van-field
+            v-model="input"
+            placeholder="输入内容"
+            type="textarea"
+            class="send-text"
+            rows="1"
+            border
+            :autosize="{ maxHeight: 24, minHeight: 24 }"
+          />
+          <van-button @click="onSendClick" class="send-btn" type="info" round>发送</van-button>
+        </div>
+        <div style="color: red">红色</div>
       </div>
-      <div style="color: red">红色</div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -167,14 +169,7 @@ export default {
         })
       );
     },
-    initMessageList() {
-      this.stompClient.send(
-        '/app/init',
-        JSON.stringify({
-          userId: 0
-        })
-      );
-    },
+
     // 发送拉取历史记录请求
     getHistory() {
       if (this.nextPage === 0) {

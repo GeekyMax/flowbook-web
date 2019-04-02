@@ -264,7 +264,7 @@ img.static-emotion {
         @scroll-to-top="refresh"
         class="container-main"
         v-if="dataArray && dataArray.length > 0"
-        :style="{ maxHeight: maxHeight - 50 + 'px' }"
+        :style="{ maxHeight: maxHeight + 'px' }"
       >
         <div class="message">
           <ul>

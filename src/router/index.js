@@ -4,6 +4,7 @@ import SellerHome from '@/views/SellerHome/SellerHome';
 import OrderDetail from '@/views/OrderDetail/OrderDetail';
 import Chat from '@/views/Chat/Chat';
 import NewChat from '@/views/Chat/NewChat';
+import ChatList from '@/views/Chat/ChatList';
 const Home = () => import(/* webpackChunkName: "Home" */ '@/views/Home/Home');
 const Cart = () => import(/* webpackChunkName: "Cart" */ '@/views/Cart/Cart');
 const User = () => import(/* webpackChunkName: "User" */ '@/views/User/User');
@@ -155,6 +156,14 @@ export default new Router({
       meta: {
         fullScreen: true,
         title: 'flowbook 聊天界面'
+      }
+    },
+    {
+      path: '/chatList',
+      name: 'ChatList',
+      component: ChatList,
+      meta: {
+        fullScreen: false
       }
     }
   ],
