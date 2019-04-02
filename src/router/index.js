@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import SellerHome from '@/views/SellerHome/SellerHome';
 import OrderDetail from '@/views/OrderDetail/OrderDetail';
 import Chat from '@/views/Chat/Chat';
+import NewChat from '@/views/Chat/NewChat';
 const Home = () => import(/* webpackChunkName: "Home" */ '@/views/Home/Home');
 const Cart = () => import(/* webpackChunkName: "Cart" */ '@/views/Cart/Cart');
 const User = () => import(/* webpackChunkName: "User" */ '@/views/User/User');
@@ -142,6 +143,15 @@ export default new Router({
       path: '/chat',
       name: 'Chat',
       component: Chat,
+      meta: {
+        fullScreen: true,
+        title: 'flowbook 聊天界面'
+      }
+    },
+    {
+      path: '/newChat',
+      name: 'NewChat',
+      component: NewChat,
       meta: {
         fullScreen: true,
         title: 'flowbook 聊天界面'

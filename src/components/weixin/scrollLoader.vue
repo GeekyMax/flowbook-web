@@ -157,9 +157,9 @@ export default {
           ) {
             if (me.bottonLoading) return;
 
-            me.bottonLoading = true;
-            scrollContainer.scrollTop += 40;
-            me.$emit('scroll-to-botton', bottonDone);
+            // me.bottonLoading = true;
+            // scrollContainer.scrollTop += 40;
+            // me.$emit('scroll-to-botton', bottonDone);
           }
         };
       }, 50);

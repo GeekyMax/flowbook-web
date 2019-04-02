@@ -11,7 +11,7 @@ new Date().toLocaleString() }]
 <style scoped>
 .wxchat-container {
   width: 100%;
-  height: 100%;
+  /*height: 100%;*/
   z-index: 100;
   position: fixed;
   left: 0;
@@ -366,7 +366,7 @@ export default {
       isUnderLaoding: false,
 
       isRefreshedAll: false,
-      isLoadedAll: false,
+      isLoadedAll: true,
 
       minHeight: 700
       // dataArray: []
