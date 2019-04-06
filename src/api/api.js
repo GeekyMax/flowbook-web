@@ -1,4 +1,4 @@
-import { get, post, postForm } from '@/util/http';
+import { get, post, postFile, postForm } from '@/util/http';
 export const test = () => get('/');
 export const login = params => postForm('login', params);
 export const reg = params => post('reg', params);
@@ -30,3 +30,5 @@ export const removeAddress = params => post('/removeAddress', params);
 export const createOrder = params => post('createOrder', params);
 export const getOrder = params => post('listOrder', params);
 export const getOrderInfo = params => post('getOrderInfo', params);
+
+export const uploadImage = file => postFile('storage/upload', file);

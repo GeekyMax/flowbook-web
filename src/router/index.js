@@ -5,6 +5,7 @@ import OrderDetail from '@/views/OrderDetail/OrderDetail';
 import Chat from '@/views/Chat/Chat';
 import NewChat from '@/views/Chat/NewChat';
 import ChatList from '@/views/Chat/ChatList';
+import PublishBook from '@/views/Book/PublishBook';
 const Home = () => import(/* webpackChunkName: "Home" */ '@/views/Home/Home');
 const Cart = () => import(/* webpackChunkName: "Cart" */ '@/views/Cart/Cart');
 const User = () => import(/* webpackChunkName: "User" */ '@/views/User/User');
@@ -164,6 +165,14 @@ export default new Router({
       component: ChatList,
       meta: {
         fullScreen: false
+      }
+    },
+    {
+      path: '/publish',
+      name: 'Publish',
+      component: PublishBook,
+      meta: {
+        fullScreen: true
       }
     }
   ],

@@ -102,3 +102,24 @@ export function postForm(url, params) {
       });
   });
 }
+
+export function postFile(url, file) {
+  return new Promise((resolve, reject) => {
+    axios({
+      url: url,
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        file: file
+      }
+    })
+      .then(res => {
+        resolve(res.data);
+      })
+      .catch(err => {
+        reject(err.data);
+      });
+  });
+}
