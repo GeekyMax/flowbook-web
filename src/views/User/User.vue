@@ -33,6 +33,9 @@
       </van-col>
     </van-row>
     <van-cell-group class="user-group">
+      <van-cell title="我的首页" icon="home-o" is-link :to="'/seller?id=' + userId" />
+    </van-cell-group>
+    <van-cell-group class="user-group">
       <van-cell title="全部订单" icon="records" is-link to="/OrderList" />
       <van-cell title="我的收藏" icon="star-o" is-link />
       <van-cell title="浏览历史" icon="browsing-history-o" is-link />
@@ -53,7 +56,7 @@ export default {
   data() {
     return {
       backgroundStyle: {
-        backgroundImage: 'http://flowbook-pic.oss-cn-hangzhou.aliyuncs.com/background/back1.jpg_user-background'
+        backgroundImage: 'https://flowbook-pic.oss-cn-hangzhou.aliyuncs.com/background/md-2.png_user-background'
       },
       logged: false,
       show: false,
@@ -74,6 +77,9 @@ export default {
     },
     username() {
       return this.me.userInfo ? this.me.userInfo.username : '点击头像登录';
+    },
+    userId() {
+      return this.me.userInfo ? this.me.userInfo.userId : 0;
     },
     ...mapGetters(['me'])
   },
@@ -141,7 +147,7 @@ export default {
   padding-bottom 60%
   position relative
   background-size 100% auto
-  background-image url("http://flowbook-pic.oss-cn-hangzhou.aliyuncs.com/background/back4.png_user-background")
+  background-image url("https://flowbook-pic.oss-cn-hangzhou.aliyuncs.com/background/md-10.png_user-background")
 .avatar-div
   width 100%
   height 80px
@@ -156,7 +162,9 @@ export default {
     width 80px
     height 80px
   .username-div
-    font-size 20px
+    margin-top 12px
+    font-size 24px
+    color white
 .van-actionsheet__item
   color red
 </style>

@@ -1,34 +1,41 @@
 <template>
-  <div v-if="username">
-    <van-nav-bar :title="toUser" left-text="返回" left-arrow @click-left="goBack" z-index="200" />
-    <div class="my-container">
-      <wx-chat
-        id="wx-chat"
-        class="wx-chat"
-        :data-array="wxChatData"
-        :showShade="false"
-        contactNickname="简叔"
-        :getUpperData="getUpperData"
-        :getUnderData="getUpperData"
-        ownerAvatarUrl="https://flowbook-pic.oss-cn-hangzhou.aliyuncs.com/avatar/default.jpg"
-        contactAvatarUrl="https://flowbook-pic.oss-cn-hangzhou.aliyuncs.com/avatar/default.jpg"
-        width="100%"
-      >
-      </wx-chat>
-      <div class="send-footer van-hairline--top">
-        <van-field
-          v-model="content"
-          placeholder="输入内容"
-          type="textarea"
-          class="send-text"
-          rows="1"
-          border
-          :autosize="{ maxHeight: 24, minHeight: 24 }"
-        />
-        <van-button @click="sendToUser" class="send-btn" type="info" round>发送</van-button>
+  <mu-slide-left-transition>
+    <div v-if="username">
+      <van-nav-bar :title="toUser" left-text="返回" left-arrow @click-left="goBack" z-index="200" />
+      <!--<mu-appbar style="width: 100%;" color="primary" :title="toUser">-->
+      <!--<mu-button icon slot="left" @click="goBack">-->
+      <!--<mu-icon value="arrow-back"></mu-icon>-->
+      <!--</mu-button>-->
+      <!--</mu-appbar>-->
+      <div class="my-container">
+        <wx-chat
+          id="wx-chat"
+          class="wx-chat"
+          :data-array="wxChatData"
+          :showShade="false"
+          contactNickname="简叔"
+          :getUpperData="getUpperData"
+          :getUnderData="getUpperData"
+          ownerAvatarUrl="https://flowbook-pic.oss-cn-hangzhou.aliyuncs.com/avatar/default.jpg"
+          contactAvatarUrl="https://flowbook-pic.oss-cn-hangzhou.aliyuncs.com/avatar/default.jpg"
+          width="100%"
+        >
+        </wx-chat>
+        <div class="send-footer van-hairline--top">
+          <van-field
+            v-model="content"
+            placeholder="输入内容"
+            type="textarea"
+            class="send-text"
+            rows="1"
+            border
+            :autosize="{ maxHeight: 24, minHeight: 24 }"
+          />
+          <van-button @click="sendToUser" class="send-btn" type="info" round>发送</van-button>
+        </div>
       </div>
     </div>
-  </div>
+  </mu-slide-left-transition>
 </template>
 
 <script>

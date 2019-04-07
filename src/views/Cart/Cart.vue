@@ -1,11 +1,12 @@
 <template>
   <div class="cart">
+    <!--<mu-appbar style="width: 100%; z-index: 10" color="primary" title="购物车" />-->
     <van-nav-bar title="购物车" :right-text="rightText" @click-right="editCart" :z-index="10" fixed />
     <div class="no-good" v-if="!this.cartList.length">
       <div>购物车空空的，快去购物吧~</div>
       <van-button type="primary" class="btn" @click="goHome">去首页</van-button>
     </div>
-    <van-checkbox-group class="card-goods" v-model="checkedGoods">
+    <van-checkbox-group class="card-goods" v-model="checkedGoods" v-if="this.cartList.length">
       <van-checkbox class="card-goods__item" v-for="item in cartList" :key="item.book.id" :name="item.book.id">
         <van-card
           :title="item.book.bookName"
@@ -15,15 +16,15 @@
           :thumb="item.book.coverUrl"
         >
           <!--<div slot="footer" class="footer">-->
-            <!--<span class="add" @click.stop="reduceCount(item, item.Cartcount)">-->
-              <!--<van-button class="btn" size="mini">-</van-button>-->
-            <!--</span>-->
-            <!--<span class="input" @click.stop="showModal(item)">-->
-              <!--<span class="input-edit">{{ item.Cartcount }}</span>-->
-            <!--</span>-->
-            <!--<span class="reduce" @click.stop="addCount(item, item.Cartcount)">-->
-              <!--<van-button class="btn" size="mini">+</van-button>-->
-            <!--</span>-->
+          <!--<span class="add" @click.stop="reduceCount(item, item.Cartcount)">-->
+          <!--<van-button class="btn" size="mini">-</van-button>-->
+          <!--</span>-->
+          <!--<span class="input" @click.stop="showModal(item)">-->
+          <!--<span class="input-edit">{{ item.Cartcount }}</span>-->
+          <!--</span>-->
+          <!--<span class="reduce" @click.stop="addCount(item, item.Cartcount)">-->
+          <!--<van-button class="btn" size="mini">+</van-button>-->
+          <!--</span>-->
           <!--</div>-->
         </van-card>
       </van-checkbox>

@@ -36,10 +36,11 @@ axios.interceptors.response.use(
           });
           break;
         case 404:
-          Toast({
-            message: '网络请求不存在',
-            duration: 1500,
-            forbidClick: true
+          router.replace({
+            path: '/login',
+            query: {
+              redirect: router.currentRoute.fullPath
+            }
           });
           break;
         default:

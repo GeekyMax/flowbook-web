@@ -2,6 +2,26 @@
   <div class="my-container">
     <div>
       <van-nav-bar title="消息" />
+      <!--<mu-appbar style="width: 100%;" color="primary" title="消息">-->
+      <!--<mu-button icon slot="left">-->
+      <!--<mu-icon value="menu"></mu-icon>-->
+      <!--</mu-button>-->
+      <!--<mu-menu slot="right">-->
+      <!--<mu-button flat><mu-icon value="add"></mu-icon></mu-button>-->
+      <!--<mu-list slot="content">-->
+      <!--<mu-list-item button>-->
+      <!--<mu-list-item-content>-->
+      <!--<mu-list-item-title>发起会话</mu-list-item-title>-->
+      <!--</mu-list-item-content>-->
+      <!--</mu-list-item>-->
+      <!--<mu-list-item button>-->
+      <!--<mu-list-item-content>-->
+      <!--<mu-list-item-title>更多</mu-list-item-title>-->
+      <!--</mu-list-item-content>-->
+      <!--</mu-list-item>-->
+      <!--</mu-list>-->
+      <!--</mu-menu>-->
+      <!--</mu-appbar>-->
     </div>
     <div>
       <chat-list-item

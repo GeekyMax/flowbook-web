@@ -1,36 +1,30 @@
 <template>
   <transition name="slide">
     <div class="login">
-      <h1>登陆商城</h1>
-      <van-cell-group class="login-from">
-        <van-field
-          v-model="username"
-          clearable
-          border
-          label="邮箱"
-          placeholder="请输入邮箱"
-          :error-message="usernameErr"
-        />
-        <van-field
+      <h1 class="logo">
+        flowbook
+      </h1>
+      <mu-paper :z-depth="4" class="login-from">
+        <mu-text-field v-model="username" label="Username" type="text"></mu-text-field>
+        <mu-text-field
           v-model="password"
-          clearable
-          border
-          type="password"
-          label="密码"
-          placeholder="请输入密码"
-          :error-message="passwordErr"
-        />
+          label="Password"
+          :action-icon="visibility ? 'visibility_off' : 'visibility'"
+          :action-click="() => (this.visibility = !this.visibility)"
+          :type="visibility ? 'text' : 'password'"
+        ></mu-text-field
+        ><br />
         <van-cell>
           <van-row>
             <van-col span="12" class="btn">
-              <van-button type="primary" size="small" @click="login" :loading="loading">登陆</van-button>
+              <mu-button color="primary" @click="login">登录</mu-button>
             </van-col>
             <van-col span="12" class="btn">
-              <van-button type="default" size="small" @click="reg">注册</van-button>
+              <mu-button color="success" @click="reg">注册</mu-button>
             </van-col>
           </van-row>
         </van-cell>
-      </van-cell-group>
+      </mu-paper>
     </div>
   </transition>
 </template>
@@ -48,6 +42,7 @@ export default {
       usernameErr: '',
       passwordErr: '',
       loading: false,
+      visibility: false,
       redirect: this.$route.query.redirect
     };
   },
@@ -98,20 +93,16 @@ export default {
   width 100%
   height 100%
   text-align center
-  /*background url('./../../images/bgc/bgc.jpg')*/
+  background url('https://flowbook-pic.oss-cn-hangzhou.aliyuncs.com/background/md-2.png')
   /*background-repeat no-repeat*/
   /*background-size cover*/
   overflow hidden
-
-  h1
-    margin-top 40%
 
 .login-from
   width 80%
   text-align center
   padding 10px
   margin 0 auto
-  box-shadow 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 8px 0 rgba(0, 0, 0, 0.19)
 
   .btn
     text-align center
@@ -123,4 +114,10 @@ export default {
 .slide-enter, .slide-leave-to
   opacity 0
   transform translate3d(100%, 0, 0)
+.logo
+  margin-top 40%
+  font-size 48px
+  font-family Hei
+  color white
+  margin-bottom 24px
 </style>

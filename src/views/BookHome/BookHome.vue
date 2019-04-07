@@ -3,67 +3,42 @@
     <van-search v-model="searchValue" placeholder="请输入搜索关键词" show-action @search="onSearch">
       <div slot="action" @click="onSearch">搜索</div>
     </van-search>
-    <div class="home-swipe">
-      <div class="home-swipe-head">
-        <span class="recommend">今日推荐</span>
-        <span class="tips">每天都有新发现</span>
-        <span class="swipe-num">
-          <span class="indexPage">{{ indexPage + 1 }}</span>
-          <span class="pageNum">/4</span>
-        </span>
-      </div>
-      <van-swipe :autoplay="3000" class="swipe" @change="changeSwipe">
-        <van-swipe-item class="swipe-item"><img src="@/images/swipe/swipe-1.jpg"/></van-swipe-item>
-        <van-swipe-item class="swipe-item"><img src="@/images/swipe/swipe-2.jpg"/></van-swipe-item>
-        <van-swipe-item class="swipe-item"><img src="@/images/swipe/swipe-3.jpg"/></van-swipe-item>
-        <van-swipe-item class="swipe-item"><img src="@/images/swipe/swipe-4.jpg"/></van-swipe-item>
-      </van-swipe>
-    </div>
-    <good-item title="热销榜" describe="每日热销指南" moreRoute="/more/1">
-      <scrollX scrollDir="scrollX" class="scroll-hot" :data="hotGoods"> </scrollX>
-    </good-item>
-    <good-item title="低价火拼" describe="一起拼最划算" moreRoute="/more/1">
-      <ul class="sale-ul">
-        <li class="sale-item" v-for="item in saleGroupGoods.slice(0, 3)" :key="item.Goodid" @click="showGood(item)">
-          <img :src="item.GoodImg" alt="" />
-          <div class="sale-title">
-            拼团价
-            <span class="sale-price">￥{{ item.GoodPriceaftersale }}</span>
-          </div>
-        </li>
-      </ul>
-    </good-item>
-    <good-item title="发现" describe="发现更多优质好货">
-      <ul class="discover-ul">
-        <background-img
-          v-for="(item, index) in discoverGoods.slice(0, 2)"
-          :key="item.Goodid"
-          :imgSrc="item.GoodImg"
-          class="discover-li"
-          :class="index === 0 ? 'discover-img' : ''"
-          :topic="item.Goodname"
-          :desc="item.Gooddescribe"
-          @click.native="showGood(item)"
-        ></background-img>
-      </ul>
-      <ul class="discover-ul">
-        <background-img
-          v-for="item in discoverGoods.slice(0, 3)"
-          :key="item.Goodid"
-          :imgSrc="item.GoodImg"
-          class="discover-li"
-          :topic="item.Goodname"
-          :desc="item.Gooddescribe"
-          @click.native="showGood(item)"
-        ></background-img>
-      </ul>
-    </good-item>
+    <!--<div class="home-swipe">-->
+    <!--<div class="home-swipe-head">-->
+    <!--<span class="recommend">今日推荐</span>-->
+    <!--<span class="tips">每天都有新发现</span>-->
+    <!--<span class="swipe-num">-->
+    <!--<span class="indexPage">{{ indexPage + 1 }}</span>-->
+    <!--<span class="pageNum">/4</span>-->
+    <!--</span>-->
+    <!--</div>-->
+    <!--<van-swipe :autoplay="3000" class="swipe" @change="changeSwipe">-->
+    <!--<van-swipe-item class="swipe-item"><img src="@/images/swipe/swipe-1.jpg"/></van-swipe-item>-->
+    <!--<van-swipe-item class="swipe-item"><img src="@/images/swipe/swipe-2.jpg"/></van-swipe-item>-->
+    <!--<van-swipe-item class="swipe-item"><img src="@/images/swipe/swipe-3.jpg"/></van-swipe-item>-->
+    <!--<van-swipe-item class="swipe-item"><img src="@/images/swipe/swipe-4.jpg"/></van-swipe-item>-->
+    <!--</van-swipe>-->
+    <!--</div>-->
+    <!--<good-item title="热销榜" describe="每日热销指南" moreRoute="/more/1">-->
+    <!--<scrollX scrollDir="scrollX" class="scroll-hot" :data="hotGoods"> </scrollX>-->
+    <!--</good-item>-->
+    <!--<good-item title="低价火拼" describe="一起拼最划算" moreRoute="/more/1">-->
+    <!--<ul class="sale-ul">-->
+    <!--<li class="sale-item" v-for="item in saleGroupGoods.slice(0, 3)" :key="item.Goodid" @click="showGood(item)">-->
+    <!--<img :src="item.GoodImg" alt="" />-->
+    <!--<div class="sale-title">-->
+    <!--拼团价-->
+    <!--<span class="sale-price">￥{{ item.GoodPriceaftersale }}</span>-->
+    <!--</div>-->
+    <!--</li>-->
+    <!--</ul>-->
+    <!--</good-item>-->
     <div class="recommend">
-      <div class="recommend-title">
-        <div class="border"></div>
-        <div class="title">更多宝贝</div>
-        <div class="border"></div>
-      </div>
+      <!--<div class="recommend-title">-->
+      <!--<div class="border"></div>-->
+      <!--<div class="title">更多宝贝</div>-->
+      <!--<div class="border"></div>-->
+      <!--</div>-->
       <van-tabs>
         <van-tab v-for="(value, key) in goodItems" :key="key" :title="key">
           <book-list :category="value"></book-list>
@@ -241,4 +216,8 @@ export default {
     height 1px
     margin 0 8px
     background-color #000
+.back-arrow
+  position fixed
+  bottom 74px
+  right 24px
 </style>

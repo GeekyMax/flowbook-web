@@ -3,7 +3,7 @@
     <div class="index-loading" v-if="!book.id">
       <img src="/bars.svg" width="40" alt="" />
     </div>
-    <div class="book" v-if="this.book.id">
+    <div class="book" v-if="book.id">
       <div class="back-btn" @click="goBack">
         <van-icon name="arrow-left" />
       </div>
@@ -250,6 +250,9 @@ export default {
     onBuyClicked() {
       this.setOrderBook([this.book]);
       this.$router.push('/Order');
+    },
+    onAddCartClicked() {
+      Toast('加入购物车不可用');
     },
     onSellerClicked() {
       if (this.book && this.book.id) {

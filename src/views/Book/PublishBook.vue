@@ -1,10 +1,11 @@
 <template>
   <div>
-    <van-nav-bar title="发布图书" left-arrow left-text="返回" @click-left="goBack" />
+    <!--<van-nav-bar title="发布图书" left-arrow left-text="返回" @click-left="goBack" />-->
     <div class="my-container">
       <div class="submit-container">
         <van-cell style="background-color: transparent">
-          <van-button type="info" size="large" round @click="onSubmitClicked">发布图书</van-button>
+          <!--<van-button type="info" size="large" round @click="onSubmitClicked">发布图书</van-button>-->
+          <mu-button full-width large round color="primary" @click="onSubmitClicked">发布图书</mu-button>
         </van-cell>
       </div>
       <div class="field-container">
@@ -335,7 +336,7 @@ export default {
   bottom 0
   width 100%
 .upload-container
-  padding-right  0px
+  padding-right  0
 .upload-label
   margin-bottom 8px
 .cube-validator
