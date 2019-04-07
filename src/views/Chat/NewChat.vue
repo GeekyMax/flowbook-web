@@ -2,7 +2,7 @@
   <transition name="slide">
     <div>
       <van-nav-bar :title="toUserInfo.username" left-text="返回" left-arrow @click-left="goBack" z-index="200" />
-      <div class="container">
+      <div class="my-container">
         <wx-chat
           id="wx-chat"
           class="wx-chat"
@@ -254,7 +254,7 @@ export default {
 <style scoped lang="stylus">
 .nav-bar
   z-index 200
-.container
+.my-container
   .wx-chat
     width 100%
     margin-top 46px

@@ -1,6 +1,6 @@
 <template>
   <transition name="slide">
-    <div class="container">
+    <div class="my-container">
       <van-nav-bar title="地址编辑" left-text="返回" left-arrow @click-left="goBack" :z-index="10" />
       <div>
         <van-cell-group>
@@ -160,7 +160,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.container
+.my-container
   background #f5f5f5
   height 100%
 .slide-enter-active, .slide-leave-active

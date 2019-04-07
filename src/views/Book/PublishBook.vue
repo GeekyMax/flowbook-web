@@ -1,15 +1,21 @@
 <template>
   <div>
     <van-nav-bar title="发布图书" left-arrow left-text="返回" @click-left="goBack" />
-    <div class="container">
+    <div class="my-container">
       <div class="submit-container">
         <van-cell style="background-color: transparent">
-          <van-button type="info" size="large" round>发布图书</van-button>
+          <van-button type="info" size="large" round @click="onSubmitClicked">发布图书</van-button>
         </van-cell>
       </div>
       <div class="field-container">
         <van-cell-group style="margin-bottom: 12px" title="基本信息">
           <van-field v-model="book.bookName" placeholder="输入书名及简单信息" label="书籍标题" clearable />
+          <cube-validator
+            v-model="valid.bookName"
+            :model="book.bookName"
+            :rules="rules.bookName"
+            messages="你好"
+          ></cube-validator>
           <van-field
             clearable
             v-model="book.description"
@@ -20,14 +26,14 @@
             autosize
           />
           <van-cell class="upload-container">
-            <div class="upload-label">上传图片</div>
-            <!--<cube-upload-->
-            <!--:action="action"-->
-            <!--:simultaneous-uploads="1"-->
-            <!--@files-added="filesAdded"-->
-            <!--@file-success="fileSuccess"-->
-            <!--@file-removed="fileRemoved"-->
-            <!--/>-->
+            <div class="upload-label">上传图片({{ book.pictureUrlList.length }}/8)</div>
+            <cube-upload
+              :action="action"
+              :simultaneous-uploads="1"
+              @files-added="filesAdded"
+              @file-success="fileSuccess"
+              @file-removed="fileRemoved"
+            />
           </van-cell>
           <van-field v-model="book.sellPrice" placeholder="输入出售价格" type="number" label="出售价格" />
           <van-field v-model="book.category" label="分类" placeholder="输入图书分类" />
@@ -142,11 +148,39 @@
 
 <script>
 import { Toast } from 'vant';
+import { publishBook } from '@/api/api';
 
 export default {
   name: 'PublishBook',
   data() {
     return {
+      valid: {
+        bookName: undefined,
+        category: undefined
+      },
+      rules: {
+        bookName: {
+          required: true,
+          type: 'string',
+          max: 80
+        },
+        category: {
+          required: true,
+          type: 'string',
+          max: 20
+        },
+        author: {
+          required: false,
+          type: 'string',
+          max: 80
+        },
+        sellPrice: {
+          required: true,
+          type: 'number',
+          max: 10000,
+          min: 0
+        }
+      },
       action: {
         target: 'http://localhost:8080/storage/upload',
         prop: 'file',
@@ -172,7 +206,6 @@ export default {
         sellPrice: {},
         category: '',
         coverUrl: '',
-        address: '',
         quality: 10,
         version: '',
         author: '',
@@ -230,26 +263,31 @@ export default {
     },
     filesAdded(files) {
       let hasIgnore = false;
+      let enough = false;
       const maxSize = 1024 * 1024 * 10; // 10M
       for (let file of files) {
-        if (file.size > maxSize) {
+        if (this.book.pictureUrlList.length >= 8) {
+          file.ignore = true;
+          enough = true;
+        } else if (file.size > maxSize) {
           file.ignore = true;
           hasIgnore = true;
         }
       }
-      hasIgnore &&
-        this.$createToast({
-          type: 'warn',
-          time: 1000,
-          txt: 'You selected >1M files'
-        }).show();
+      hasIgnore && Toast('请不要选择大于10M的图片');
+      enough && Toast('照片最多只能上传8张哦');
     },
     fileSuccess(file) {
+      if (this.book.pictureUrlList.length > 8) {
+        Toast('照片最多只能上传8张哦');
+        return;
+      }
       console.log(file);
       const response = file.response;
       if (response && response.code === 0) {
         this.book.pictureUrlList.push(response.data.url);
         file.url = response.data.url;
+        this.book.coverUrl = this.book.pictureUrlList[0];
       } else {
         Toast('图片上传失败');
       }
@@ -257,19 +295,38 @@ export default {
     fileRemoved(file) {
       console.log(file);
       let newList = [];
+      if (this.book.pictureUrlList.length === 1) {
+        this.book.coverUrl = '';
+      }
       for (let url of this.book.pictureUrlList) {
         if (file.response.data.url !== url) {
           newList.push(url);
         }
       }
       this.book.pictureUrlList = newList;
-    }
+    },
+    onSubmitClicked() {
+      publishBook(this.book)
+        .then(result => {
+          if (result.code === 0) {
+            Toast('发布图书成功');
+            this.$router.go(-1);
+          } else {
+            Toast('发布图书失败');
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          Toast('发布图书失败');
+        });
+    },
+    validateAll() {}
   }
 };
 </script>
 
 <style scoped lang="stylus">
-.container
+.my-container
   background-color #f5f5f5
   height 100%
 .submit-container
@@ -278,7 +335,9 @@ export default {
   bottom 0
   width 100%
 .upload-container
-  padding-right  8px
+  padding-right  0px
 .upload-label
   margin-bottom 8px
+.cube-validator
+  padding-left 105px
 </style>

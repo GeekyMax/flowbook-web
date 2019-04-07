@@ -1,5 +1,5 @@
 <template>
-  <div class="container ">
+  <div class="my-container ">
     <span class="key">{{ myKey }}</span>
     <div class="value">{{ myValue }}</div>
   </div>
@@ -22,7 +22,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.container
+.my-container
   padding-top 3px
   font-size 14px
   background-color white

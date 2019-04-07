@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="my-container">
     <div>
       <van-nav-bar title="消息" />
     </div>
@@ -63,7 +63,7 @@ export default {
 </script>
 
 <style scoped lang="stylus">
-.container
+.my-container
   height 100%
   background-color #f5f5f5
 </style>

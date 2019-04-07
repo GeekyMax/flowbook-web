@@ -1,6 +1,6 @@
 <template>
   <van-cell @click="goChat">
-    <div class="container">
+    <div class="my-container">
       <div class="avatar"><img :src="avatar" :alt="toUser.username" class="avatar-img" /></div>
       <div class="right-container">
         <div class="username-date-div">
@@ -85,7 +85,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.container
+.my-container
   display flex
   .avatar
     flex none

@@ -1,11 +1,17 @@
 import Vue from 'vue';
+// import './cube-ui';
 import App from './App.vue';
 import Vant from 'vant';
 import { Lazyload } from 'vant';
 import 'vant/lib/index.css';
 import router from './router';
 import store from './store';
-
+import MuseUI from 'muse-ui';
+import 'muse-ui/dist/muse-ui.css';
+import { Style, Upload, Validator } from 'cube-ui';
+Vue.use(Upload);
+Vue.use(Validator);
+Vue.use(MuseUI);
 Vue.use(Vant);
 Vue.use(Lazyload);
 Vue.config.productionTip = false;
