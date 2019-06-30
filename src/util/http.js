@@ -8,7 +8,7 @@ import * as Qs from 'qs';
 if (process.env.NODE_ENV === 'development') {
   axios.defaults.baseURL = 'http://localhost:8080';
 } else {
-  axios.defaults.baseURL = 'http://localhost:8080';
+  axios.defaults.baseURL = 'http://locahost:8080';
 }
 
 // 超时时间

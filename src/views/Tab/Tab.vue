@@ -4,7 +4,7 @@
       <mu-button fab color="primary" small @click="openFullscreenDialog">
         <mu-icon value="add"></mu-icon>
       </mu-button>
-      <div class="publish-label">消息</div>
+      <div class="publish-label">发布</div>
     </div>
 
     <van-tabbar v-model="active" class="tab" style="z-index:999">

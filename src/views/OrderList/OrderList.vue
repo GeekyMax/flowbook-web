@@ -54,7 +54,7 @@ export default {
         this.orderList = result.data.list;
         console.log(this.orderList);
       })
-      .catch(error => {
+      .catch(err => {
         console.log(err);
       });
   },

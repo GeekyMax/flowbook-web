@@ -79,7 +79,7 @@ export default {
   },
   methods: {
     connect() {
-      this.socket = new SockJS('http://localhost:8080/flowbook-ws');
+      this.socket = new SockJS('http://lcoalhost:8080/flowbook-ws');
 
       this.stompClient = Stomp.over(this.socket);
       this.stompClient.connect({}, frame => {
